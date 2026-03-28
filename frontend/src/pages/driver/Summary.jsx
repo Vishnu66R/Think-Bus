@@ -1,0 +1,143 @@
+// frontend/src/pages/driver/Summary.jsx
+// ----------------------------------------
+// Trip summary showing stops covered, students,
+// route duration, and bus capacity.
+// ----------------------------------------
+
+import { useState, useEffect } from "react";
+import { fetchDriverSummary } from "../../api";
+import "./DriverPages.css";
+
+function Summary() {
+  const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const username = JSON.parse(localStorage.getItem("thinkbus_user"))?.username || "";
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetchDriverSummary(username);
+        if (res.success) {
+          setSummary(res.summary);
+        } else {
+          setError(res.message || "Failed to load summary");
+        }
+      } catch {
+        setError("Could not connect to server");
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (username) load();
+  }, [username]);
+
+  if (loading) {
+    return (
+      <div className="driver-loading">
+        <div className="loading-spinner"></div>
+        <p>Loading summary…</p>
+      </div>
+    );
+  }
+  if (error) return <div className="driver-error">{error}</div>;
+  if (!summary) {
+    return (
+      <div className="driver-page">
+        <div className="empty-state">
+          <span className="empty-icon">📋</span>
+          <p>No trip data available.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Calculate capacity usage percentage
+  const capacityPct = Math.round((summary.total_students / summary.bus_capacity) * 100);
+
+  return (
+    <div className="driver-page" id="driver-summary">
+      <div className="driver-page-header">
+        <h2>Trip Summary</h2>
+        <p className="driver-page-subtitle">Overview of your current trip</p>
+      </div>
+
+      {/* Summary cards */}
+      <div className="summary-grid">
+        <div className="summary-stat-card">
+          <span className="stat-icon" style={{ background: "#dbeafe", color: "#2563eb" }}>🛣️</span>
+          <div className="stat-body">
+            <span className="stat-value">{summary.route_name}</span>
+            <span className="stat-label">Route</span>
+          </div>
+        </div>
+
+        <div className="summary-stat-card">
+          <span className="stat-icon" style={{ background: "#dcfce7", color: "#16a34a" }}>🚌</span>
+          <div className="stat-body">
+            <span className="stat-value">{summary.bus_number}</span>
+            <span className="stat-label">Bus Number</span>
+          </div>
+        </div>
+
+        <div className="summary-stat-card">
+          <span className="stat-icon" style={{ background: "#f3e8ff", color: "#7c3aed" }}>📍</span>
+          <div className="stat-body">
+            <span className="stat-value">{summary.total_stops}</span>
+            <span className="stat-label">Total Stops</span>
+          </div>
+        </div>
+
+        <div className="summary-stat-card">
+          <span className="stat-icon" style={{ background: "#fef3c7", color: "#d97706" }}>👥</span>
+          <div className="stat-body">
+            <span className="stat-value">{summary.total_students}</span>
+            <span className="stat-label">Students on Bus</span>
+          </div>
+        </div>
+
+        <div className="summary-stat-card">
+          <span className="stat-icon" style={{ background: "#fce4ec", color: "#e91e63" }}>⏱️</span>
+          <div className="stat-body">
+            <span className="stat-value">{summary.route_duration_mins} min</span>
+            <span className="stat-label">Route Duration</span>
+          </div>
+        </div>
+
+        <div className="summary-stat-card">
+          <span className="stat-icon" style={{
+            background: summary.bus_status === "Active" ? "#dcfce7" : "#fee2e2",
+            color: summary.bus_status === "Active" ? "#16a34a" : "#dc2626"
+          }}>
+            {summary.bus_status === "Active" ? "✅" : "⚠️"}
+          </span>
+          <div className="stat-body">
+            <span className="stat-value">{summary.bus_status}</span>
+            <span className="stat-label">Bus Status</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Capacity bar */}
+      <h3 className="section-title">Bus Capacity Usage</h3>
+      <div className="capacity-card">
+        <div className="capacity-header">
+          <span>{summary.total_students} / {summary.bus_capacity} seats</span>
+          <span className="capacity-pct">{capacityPct}%</span>
+        </div>
+        <div className="capacity-bar">
+          <div
+            className="capacity-fill"
+            style={{
+              width: `${capacityPct}%`,
+              background: capacityPct > 90 ? "#dc2626" : capacityPct > 70 ? "#d97706" : "#16a34a",
+            }}
+          ></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Summary;

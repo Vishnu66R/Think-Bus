@@ -1,0 +1,47 @@
+/* frontend/src/pages/admin/PlaceholderPage.css */
+/* ---------------------------------------------- */
+/* Shared styling for "Coming Soon" placeholder   */
+/* pages in the admin panel.                      */
+/* ---------------------------------------------- */
+
+.placeholder-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.placeholder-icon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+
+.placeholder-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 12px;
+}
+
+.placeholder-text {
+  font-size: 0.95rem;
+  color: #64748b;
+  max-width: 440px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.placeholder-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #dbeafe;
+  color: #1d4ed8;
+  letter-spacing: 0.5px;
+}

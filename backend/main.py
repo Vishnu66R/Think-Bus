@@ -6,6 +6,8 @@ load_dotenv()  # ← must be the very first thing, before importing database
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.auth import router as auth_router
+from routes.parent import router as parent_router
+from routes.driver import router as driver_router
 
 app = FastAPI(title="ThinkBus API", version="1.0")
 
@@ -18,6 +20,8 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(parent_router)
+app.include_router(driver_router)
 
 @app.get("/")
 def root():

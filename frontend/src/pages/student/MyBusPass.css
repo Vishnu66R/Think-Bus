@@ -1,0 +1,155 @@
+/* frontend/src/pages/student/MyBusPass.css */
+/* ------------------------------------------ */
+/* Styles for the digital bus pass card       */
+/* ------------------------------------------ */
+
+.bus-pass-page {
+  max-width: 600px;
+}
+
+.bus-pass-header {
+  margin-bottom: 24px;
+}
+.bus-pass-page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px;
+}
+.bus-pass-page-desc {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* The Pass Card */
+.bus-pass-card {
+  background: linear-gradient(135deg, #1e3a5f, #0f172a);
+  border-radius: 16px;
+  overflow: hidden;
+  color: #ffffff;
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.25);
+}
+
+/* Card Top */
+.pass-card-top {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.pass-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pass-logo {
+  font-size: 2rem;
+}
+.pass-college {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff;
+}
+.pass-system {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.pass-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.pass-status.active {
+  background: #22c55e;
+  color: #ffffff;
+}
+.pass-status.inactive {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* Card Body */
+.pass-card-body {
+  padding: 24px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.pass-photo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 100px;
+}
+.pass-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+.pass-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+}
+.pass-adm {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pass-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+  flex: 1;
+}
+.pass-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pass-detail-label {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.pass-detail-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Card Footer */
+.pass-card-footer {
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 600px) {
+  .pass-card-body {
+    flex-direction: column;
+    align-items: center;
+  }
+  .pass-details-grid {
+    width: 100%;
+  }
+}

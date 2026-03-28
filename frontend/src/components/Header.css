@@ -1,0 +1,72 @@
+/* frontend/src/components/Header.css */
+/* ----------------------------------- */
+/* Top header bar styling              */
+/* ----------------------------------- */
+
+.admin-topbar {
+  height: 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topbar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar-avatar {
+  font-size: 1.4rem;
+}
+
+.topbar-username {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.topbar-role-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.topbar-role-badge.student {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.topbar-role-badge.parent {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.topbar-role-badge.driver {
+  background: #fff7ed;
+  color: #c2410c;
+}
