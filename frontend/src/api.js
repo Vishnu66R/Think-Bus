@@ -117,3 +117,180 @@ export async function updateDriverStatus(username, status) {
   });
   return response.json();
 }
+
+// ─── Admin Panel API ───
+
+// GET /admin/stats
+export async function fetchAdminStats() {
+  const response = await fetch(`${BASE_URL}/admin/stats`);
+  return response.json();
+}
+
+// GET /admin/students
+export async function fetchAdminStudents() {
+  const response = await fetch(`${BASE_URL}/admin/students`);
+  return response.json();
+}
+
+// POST /admin/students
+export async function createAdminStudent(data) {
+  const response = await fetch(`${BASE_URL}/admin/students`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+// PUT /admin/students/:id
+export async function updateAdminStudent(id, data) {
+  const response = await fetch(`${BASE_URL}/admin/students/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+// DELETE /admin/students/:id
+export async function deleteAdminStudent(id) {
+  const response = await fetch(`${BASE_URL}/admin/students/${id}`, {
+    method: "DELETE",
+  });
+  return response.json();
+}
+
+// GET /admin/buses
+export async function fetchAdminBuses() {
+  const response = await fetch(`${BASE_URL}/admin/buses`);
+  return response.json();
+}
+
+// POST /admin/buses
+export async function createAdminBus(data) {
+  const response = await fetch(`${BASE_URL}/admin/buses`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+// PUT /admin/buses/:id
+export async function updateAdminBus(id, data) {
+  const response = await fetch(`${BASE_URL}/admin/buses/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+// DELETE /admin/buses/:id
+export async function deleteAdminBus(id) {
+  const response = await fetch(`${BASE_URL}/admin/buses/${id}`, {
+    method: "DELETE",
+  });
+  return response.json();
+}
+
+// GET /admin/drivers
+export async function fetchAdminDrivers() {
+  const response = await fetch(`${BASE_URL}/admin/drivers`);
+  return response.json();
+}
+
+// POST /admin/drivers
+export async function createAdminDriver(data) {
+  const response = await fetch(`${BASE_URL}/admin/drivers`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+// PUT /admin/drivers/:id
+export async function updateAdminDriver(id, data) {
+  const response = await fetch(`${BASE_URL}/admin/drivers/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+// DELETE /admin/drivers/:id
+export async function deleteAdminDriver(id) {
+  const response = await fetch(`${BASE_URL}/admin/drivers/${id}`, {
+    method: "DELETE",
+  });
+  return response.json();
+}
+
+// GET /admin/search?q=query
+export async function adminSearch(query) {
+  const response = await fetch(`${BASE_URL}/admin/search?q=${encodeURIComponent(query)}`);
+  return response.json();
+}
+
+// GET /admin/routes
+export async function fetchAdminRoutes() {
+  const response = await fetch(`${BASE_URL}/admin/routes`);
+  return response.json();
+}
+
+// GET /admin/routes/details
+export async function fetchAdminRoutesDetailed() {
+  const response = await fetch(`${BASE_URL}/admin/routes/details`);
+  return response.json();
+}
+
+// POST /admin/routes
+export async function createAdminRoute(data) {
+  const response = await fetch(`${BASE_URL}/admin/routes`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+// PUT /admin/routes/:id
+export async function updateAdminRoute(id, data) {
+  const response = await fetch(`${BASE_URL}/admin/routes/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+// DELETE /admin/routes/:id
+export async function deleteAdminRoute(id) {
+  const response = await fetch(`${BASE_URL}/admin/routes/${id}`, {
+    method: "DELETE",
+  });
+  return response.json();
+}
+
+// GET /admin/parents
+export async function fetchAdminParents() {
+  const response = await fetch(`${BASE_URL}/admin/parents`);
+  return response.json();
+}
+
+// GET /admin/route_stops
+export async function fetchAdminRouteStops() {
+  const response = await fetch(`${BASE_URL}/admin/route_stops`);
+  return response.json();
+}
+
+// ─── Student Panel API ───
+
+// GET /student/dashboard
+export async function fetchStudentDashboard(username) {
+  const response = await fetch(`${BASE_URL}/student/dashboard?username=${encodeURIComponent(username)}`);
+  return response.json();
+}
+

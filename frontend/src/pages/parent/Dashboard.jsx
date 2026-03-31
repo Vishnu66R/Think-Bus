@@ -5,7 +5,7 @@
 // Auto-refreshes every 30 seconds.
 // ----------------------------------------
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchParentDashboard } from "../../api";
 import "./ParentPages.css";
 
@@ -13,6 +13,7 @@ function Dashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const retryCount = useRef(0);
 
   // Get username from localStorage (set during login)
   const username = JSON.parse(localStorage.getItem("thinkbus_user"))?.username || "";
@@ -24,13 +25,25 @@ function Dashboard() {
       if (res.success) {
         setData(res);
         setError("");
+        retryCount.current = 0;
+        setLoading(false);
       } else {
-        setError(res.message || "Failed to load dashboard");
+        if (!data && retryCount.current < 3) {
+          retryCount.current++;
+          setTimeout(loadDashboard, 2000);
+        } else {
+          setError(res.message || "Failed to load dashboard");
+          setLoading(false);
+        }
       }
     } catch (e) {
-      setError("Could not connect to server");
-    } finally {
-      setLoading(false);
+      if (!data && retryCount.current < 3) {
+        retryCount.current++;
+        setTimeout(loadDashboard, 2000);
+      } else {
+        setError("Could not connect to server");
+        setLoading(false);
+      }
     }
   }
 
@@ -47,7 +60,7 @@ function Dashboard() {
     return (
       <div className="parent-loading">
         <div className="loading-spinner"></div>
-        <p>Loading dashboard…</p>
+        <p>{retryCount.current > 0 ? `Retrying connection (${retryCount.current}/3)...` : "Loading dashboard..."}</p>
       </div>
     );
   }
@@ -132,6 +145,20 @@ function Dashboard() {
             </div>
           );
         })}
+      </div>
+
+      {/* Map Placeholder */}
+      <h3 className="section-title" style={{ marginTop: '30px' }}>Live Bus Tracking</h3>
+      <div className="parent-map-widget" style={{
+        background: '#ffffff', border: '1px dashed #cbd5e1', borderRadius: '16px', padding: '40px',
+        textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
+      }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'radial-gradient(#e2e8f0 2px, transparent 2px)', backgroundSize: '20px 20px', opacity: 0.5, zIndex: 1 }}></div>
+        <div style={{ position: 'relative', zIndex: 2 }}>
+          <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
+          <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map View Coming Soon</h3>
+          <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>Real-time GPS tracking of your children's buses will appear here in a future update.</p>
+        </div>
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.auth import router as auth_router
 from routes.parent import router as parent_router
 from routes.driver import router as driver_router
+from routes.admin import router as admin_router
+from routes.student import router as student_router
 
 app = FastAPI(title="ThinkBus API", version="1.0")
 
@@ -22,6 +24,8 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(parent_router)
 app.include_router(driver_router)
+app.include_router(admin_router)
+app.include_router(student_router)
 
 @app.get("/")
 def root():

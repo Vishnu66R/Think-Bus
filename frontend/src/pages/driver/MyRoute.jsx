@@ -4,37 +4,58 @@
 // Auto-refreshes every 30 seconds.
 // ----------------------------------------
 
-import { useState, useEffect } from "react";
-import { fetchDriverRoute } from "../../api";
+import { useState, useEffect, useRef } from "react";
+import { fetchDriverRoute, fetchDriverSummary } from "../../api";
 import "./DriverPages.css";
 
 function MyRoute() {
   const [data, setData] = useState(null);
+  const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const retryCount = useRef(0);
 
   const username = JSON.parse(localStorage.getItem("thinkbus_user"))?.username || "";
 
-  async function loadRoute() {
+  async function loadData(isRetry = false) {
     try {
-      const res = await fetchDriverRoute(username);
-      if (res.success) {
-        setData(res);
+      const [routeRes, summaryRes] = await Promise.all([
+        fetchDriverRoute(username),
+        fetchDriverSummary(username)
+      ]);
+      
+      if (routeRes.success && summaryRes.success) {
+        setData(routeRes);
+        setSummary(summaryRes.summary);
         setError("");
+        retryCount.current = 0;
+        setLoading(false);
       } else {
-        setError(res.message || "Failed to load route");
+        // If we haven't loaded data yet, retry silently
+        if (!data && retryCount.current < 3) {
+          retryCount.current++;
+          setTimeout(() => loadData(true), 2000);
+        } else {
+          setError(routeRes.message || summaryRes.message || "Failed to load dashboard data");
+          setLoading(false);
+        }
       }
     } catch {
-      setError("Could not connect to server");
-    } finally {
-      setLoading(false);
+      // On first load, retry silently instead of showing error
+      if (!data && retryCount.current < 3) {
+        retryCount.current++;
+        setTimeout(() => loadData(true), 2000);
+      } else {
+        setError("Could not connect to server");
+        setLoading(false);
+      }
     }
   }
 
   useEffect(() => {
     if (username) {
-      loadRoute();
-      const interval = setInterval(loadRoute, 30000);
+      loadData();
+      const interval = setInterval(loadData, 30000);
       return () => clearInterval(interval);
     }
   }, [username]);
@@ -43,7 +64,7 @@ function MyRoute() {
     return (
       <div className="driver-loading">
         <div className="loading-spinner"></div>
-        <p>Loading route…</p>
+        <p>{retryCount.current > 0 ? `Retrying connection (${retryCount.current}/3)...` : "Loading Dashboard..."}</p>
       </div>
     );
   }
@@ -62,56 +83,68 @@ function MyRoute() {
   return (
     <div className="driver-page" id="driver-my-route">
       <div className="driver-page-header">
-        <h2>My Route</h2>
-        <p className="driver-page-subtitle">Your assigned route and stops</p>
+        <h2>Dashboard Overview</h2>
+        <p className="driver-page-subtitle">Your live route tracker and passenger count</p>
       </div>
 
-      {/* Route overview card */}
-      <div className="route-overview-card">
-        <div className="route-overview-row">
-          <div className="route-info-block">
-            <span className="route-info-label">Route</span>
-            <span className="route-info-value">{data.route.name}</span>
+      {/* Primary Info Cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "15px", marginBottom: "25px" }}>
+        <div style={{ background: "#ffffff", padding: "20px", borderRadius: "16px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "15px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
+          <div style={{ fontSize: "2rem", background: "#dbeafe", color: "#1d4ed8", padding: "10px", borderRadius: "12px", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center" }}>👨‍🎓</div>
+          <div>
+            <span style={{ display: "block", color: "#64748b", fontSize: "0.85rem", fontWeight: "600", textTransform: "uppercase" }}>Total Students</span>
+            <span style={{ display: "block", color: "#0f172a", fontSize: "1.5rem", fontWeight: "700" }}>{summary?.total_students || 0}</span>
           </div>
-          <div className="route-info-block">
-            <span className="route-info-label">Bus</span>
-            <span className="route-info-value">{data.bus_number}</span>
+        </div>
+        
+        <div style={{ background: "#ffffff", padding: "20px", borderRadius: "16px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "15px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
+          <div style={{ fontSize: "2rem", background: "#dcfce7", color: "#16a34a", padding: "10px", borderRadius: "12px", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center" }}>🚌</div>
+          <div>
+            <span style={{ display: "block", color: "#64748b", fontSize: "0.85rem", fontWeight: "600", textTransform: "uppercase" }}>Bus Capacity</span>
+            <span style={{ display: "block", color: "#0f172a", fontSize: "1.5rem", fontWeight: "700" }}>{summary?.bus_capacity || 50}</span>
           </div>
-          <div className="route-info-block">
-            <span className="route-info-label">Duration</span>
-            <span className="route-info-value">{data.route.estimated_duration} min</span>
+        </div>
+
+        <div style={{ background: "#ffffff", padding: "20px", borderRadius: "16px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "15px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
+          <div style={{ fontSize: "2rem", background: "#fef3c7", color: "#b45309", padding: "10px", borderRadius: "12px", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center" }}>⏱️</div>
+          <div>
+            <span style={{ display: "block", color: "#64748b", fontSize: "0.85rem", fontWeight: "600", textTransform: "uppercase" }}>Est. Duration</span>
+            <span style={{ display: "block", color: "#0f172a", fontSize: "1.5rem", fontWeight: "700" }}>{data.route.estimated_duration}m</span>
           </div>
-          <div className="route-info-block">
-            <span className="route-info-label">Status</span>
-            <span className={`route-status-badge status--${data.bus_status.toLowerCase()}`}>
-              {data.bus_status}
+        </div>
+      </div>
+
+      {/* Main Container for Route Stops */}
+      <div style={{ background: "#ffffff", padding: "24px", borderRadius: "16px", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", paddingBottom: "15px", borderBottom: "1px solid #f1f5f9" }}>
+          <div>
+            <h3 style={{ margin: 0, color: "#1e293b", fontSize: "1.2rem", fontWeight: "700" }}>Route: {data.route.name}</h3>
+            <span style={{ fontSize: "0.9rem", color: "#64748b", display: "flex", gap: "8px", marginTop: "5px" }}>
+              📍 {data.route.start_point} ➔ 🏁 {data.route.end_point}
             </span>
           </div>
+          <span className={`route-status-badge status--${data.bus_status.toLowerCase()}`}>
+            {data.bus_status}
+          </span>
         </div>
 
-        <div className="route-endpoints">
-          <span className="endpoint start-point">📍 {data.route.start_point}</span>
-          <span className="endpoint-arrow">→</span>
-          <span className="endpoint end-point">🏁 {data.route.end_point}</span>
+        {/* Stops list */}
+        <h4 style={{ margin: "0 0 15px", color: "#475569", fontSize: "1rem" }}>Scheduled Stops ({data.stops.length})</h4>
+        <div className="stops-timeline">
+          {data.stops.map((stop, idx) => (
+            <div className="stop-item" key={stop.id}>
+              <div className="stop-number">{idx + 1}</div>
+              <div className="stop-connector">
+                <div className="stop-dot"></div>
+                {idx < data.stops.length - 1 && <div className="stop-line"></div>}
+              </div>
+              <div className="stop-info">
+                <span className="stop-name">{stop.name}</span>
+                <span className="stop-time">{stop.time_from_start} min from departure</span>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-
-      {/* Stops list */}
-      <h3 className="section-title">Stops ({data.stops.length})</h3>
-      <div className="stops-timeline">
-        {data.stops.map((stop, idx) => (
-          <div className="stop-item" key={stop.id}>
-            <div className="stop-number">{idx + 1}</div>
-            <div className="stop-connector">
-              <div className="stop-dot"></div>
-              {idx < data.stops.length - 1 && <div className="stop-line"></div>}
-            </div>
-            <div className="stop-info">
-              <span className="stop-name">{stop.name}</span>
-              <span className="stop-time">{stop.time_from_start} min from start</span>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );

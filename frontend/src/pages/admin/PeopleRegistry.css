@@ -1,0 +1,251 @@
+/* frontend/src/pages/admin/PeopleRegistry.css */
+
+.registry-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease;
+  position: relative;
+}
+
+/* ── Search Bar Section ── */
+.pr-search-section {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.pr-search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pr-search-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 1.2rem;
+  color: #94a3b8;
+}
+
+.pr-search-input {
+  width: 100%;
+  padding: 16px 20px 16px 48px;
+  font-size: 1.1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  outline: none;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.pr-search-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.pr-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  border: 1px solid #e2e8f0;
+  margin-top: 8px;
+  z-index: 50;
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.pr-search-item {
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pr-search-item:last-child {
+  border-bottom: none;
+}
+
+.pr-search-item:hover {
+  background: #f8fafc;
+}
+
+.pr-search-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: white;
+}
+
+.pr-avatar-student { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+.pr-avatar-driver { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+
+.pr-search-info h4 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.pr-search-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.pr-search-empty {
+  padding: 24px;
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* ── Header & Toggles ── */
+.pr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.pr-tabs {
+  display: flex;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: 12px;
+  gap: 8px;
+}
+
+.pr-tab-btn {
+  padding: 10px 24px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pr-tab-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.pr-tab-btn:hover:not(.active) {
+  color: #1e293b;
+}
+
+/* ── Cards Grid ── */
+.pr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.pr-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.pr-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  border-color: #cbd5e1;
+}
+
+.pr-card-header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pr-card-name {
+  flex: 1;
+}
+
+.pr-card-name h3 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pr-card-name span {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.pr-card-body {
+  padding: 16px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pr-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.pr-detail-icon {
+  width: 20px;
+  display: inline-block;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.pr-detail-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.pr-card-footer {
+  padding: 12px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  gap: 10px;
+}
+
+.pr-empty {
+  text-align: center;
+  padding: 80px 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+}
+
+@media (max-width: 768px) {
+  .pr-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+}

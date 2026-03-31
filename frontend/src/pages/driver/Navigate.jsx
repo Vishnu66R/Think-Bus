@@ -139,6 +139,20 @@ function Navigate() {
           </div>
         ))}
       </div>
+
+      {/* Map Placeholder */}
+      <h3 className="section-title" style={{ marginTop: '30px', fontSize: '1.2rem', color: '#1e293b' }}>Live Navigation Map</h3>
+      <div className="driver-map-widget" style={{
+        background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '40px',
+        textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
+      }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'radial-gradient(#e2e8f0 2px, transparent 2px)', backgroundSize: '20px 20px', opacity: 0.5, zIndex: 1 }}></div>
+        <div style={{ position: 'relative', zIndex: 2 }}>
+          <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
+          <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Turn-by-Turn GPS Coming Soon</h3>
+          <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>An interactive map guiding you seamlessly to <strong>{nextStop ? nextStop.name : data.route.end_point}</strong> will appear here.</p>
+        </div>
+      </div>
     </div>
   );
 }

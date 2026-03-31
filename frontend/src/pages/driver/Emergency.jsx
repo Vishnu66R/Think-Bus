@@ -103,6 +103,35 @@ function Emergency() {
         ))}
       </div>
 
+      {/* Emergency Contacts */}
+      <h3 className="section-title" style={{ marginTop: '35px', fontSize: '1.2rem', color: '#1e293b', borderBottom: '1px solid #e2e8f0', paddingBottom: '10px' }}>Direct Contact Lines</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '15px', marginTop: '20px' }}>
+        
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px', display: 'flex', alignItems: 'center', gap: '15px', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
+          <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '50%', fontSize: '1.5rem' }}>🏢</div>
+          <div>
+            <span style={{ display: 'block', fontWeight: 'bold', color: '#0f172a' }}>Transport Office</span>
+            <span style={{ display: 'block', color: '#4f46e5', fontWeight: '600', cursor: 'pointer', marginTop:'4px' }} onClick={()=>alert("Initiating call to Transport Office...")}>+91 98765 43210</span>
+          </div>
+        </div>
+
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px', display: 'flex', alignItems: 'center', gap: '15px', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
+          <div style={{ background: '#fee2e2', padding: '12px', borderRadius: '50%', fontSize: '1.5rem' }}>🚑</div>
+          <div>
+            <span style={{ display: 'block', fontWeight: 'bold', color: '#0f172a' }}>College Medical Team</span>
+            <span style={{ display: 'block', color: '#dc2626', fontWeight: '600', cursor: 'pointer', marginTop:'4px' }} onClick={()=>alert("Initiating call to Medical Team...")}>+91 11223 34455</span>
+          </div>
+        </div>
+
+        <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px', display: 'flex', alignItems: 'center', gap: '15px', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
+          <div style={{ background: '#dbeafe', padding: '12px', borderRadius: '50%', fontSize: '1.5rem' }}>👮‍♂️</div>
+          <div>
+            <span style={{ display: 'block', fontWeight: 'bold', color: '#0f172a' }}>Highway Police</span>
+            <span style={{ display: 'block', color: '#2563eb', fontWeight: '600', cursor: 'pointer', marginTop:'4px' }} onClick={()=>alert("Initiating call to Police...")}>100 / 112</span>
+          </div>
+        </div>
+      </div>
+
       {/* Confirmation modal */}
       {confirming && (
         <div className="modal-overlay">
