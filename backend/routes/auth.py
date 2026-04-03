@@ -33,7 +33,7 @@ def signup(data: SignupRequest):
         return {"success": True, "message": f"Account created! Welcome, {data.role} {data.username}."}
 
     except Exception as e:
-        print(f"[SIGNUP ERROR] {e}")   # prints full error in your terminal
+        print(f"[SIGNUP ERROR] {e}")
         return JSONResponse(status_code=500, content={
             "success": False,
             "message": f"Server error: {str(e)}"
@@ -42,23 +42,21 @@ def signup(data: SignupRequest):
 
 @router.post("/login")
 def login(data: LoginRequest):
-    if data.role not in VALID_ROLES:
-        return JSONResponse(status_code=400, content={
-            "success": False,
-            "message": f"Invalid role. Choose from: {VALID_ROLES}"
-        })
-
+    """
+    Authenticate by username + password only.
+    Role is NOT required from the client — it is read directly
+    from the database and returned in the response.
+    """
     try:
         result = supabase.table("users").select("*") \
             .eq("username", data.username) \
             .eq("password", data.password) \
-            .eq("role", data.role) \
             .execute()
 
         if not result.data:
             return JSONResponse(status_code=401, content={
                 "success": False,
-                "message": "Invalid username, password, or role."
+                "message": "Invalid username or password."
             })
 
         user = result.data[0]
@@ -70,7 +68,7 @@ def login(data: LoginRequest):
         }
 
     except Exception as e:
-        print(f"[LOGIN ERROR] {e}")    # prints full error in your terminal
+        print(f"[LOGIN ERROR] {e}")
         return JSONResponse(status_code=500, content={
             "success": False,
             "message": f"Server error: {str(e)}"

@@ -5,6 +5,13 @@
 // ----------------------------------------
 
 import { useState, useEffect, useRef } from "react";
+import { 
+  Bus, 
+  Route, 
+  User, 
+  Phone, 
+  GraduationCap 
+} from "lucide-react";
 import { fetchParentBusInfo } from "../../api";
 import "./ParentPages.css";
 
@@ -81,7 +88,10 @@ function BusInfo() {
               <div className="bus-info-grid">
                 {/* Bus Details */}
                 <div className="bus-info-section">
-                  <h4 className="bus-info-section-title">🚌 Bus Details</h4>
+                  <h4 className="bus-info-section-title">
+                    <Bus size={18} style={{ marginRight: '8px' }} />
+                    Bus Details
+                  </h4>
                   <div className="info-row">
                     <span className="info-label">Bus Number</span>
                     <span className="info-value">{child.bus_number}</span>
@@ -96,7 +106,10 @@ function BusInfo() {
 
                 {/* Route Details */}
                 <div className="bus-info-section">
-                  <h4 className="bus-info-section-title">🛣️ Route Details</h4>
+                  <h4 className="bus-info-section-title">
+                    <Route size={18} style={{ marginRight: '8px' }} />
+                    Route Details
+                  </h4>
                   <div className="info-row">
                     <span className="info-label">Route</span>
                     <span className="info-value">{child.route_name}</span>
@@ -109,7 +122,10 @@ function BusInfo() {
 
                 {/* Driver Details */}
                 <div className="bus-info-section">
-                  <h4 className="bus-info-section-title">👨‍✈️ Driver Info</h4>
+                  <h4 className="bus-info-section-title">
+                    <User size={18} style={{ marginRight: '8px' }} />
+                    Driver Info
+                  </h4>
                   <div className="info-row">
                     <span className="info-label">Driver Name</span>
                     <span className="info-value">{child.driver_name}</span>
@@ -129,13 +145,17 @@ function BusInfo() {
                     onMouseOver={(e) => e.target.style.background = '#c7d2fe'}
                     onMouseOut={(e) => e.target.style.background = '#e0e7ff'}
                   >
-                    📞 Call Driver
+                    <Phone size={16} style={{ marginRight: '8px' }} />
+                    Call Driver
                   </button>
                 </div>
 
                 {/* Student Details */}
                 <div className="bus-info-section">
-                  <h4 className="bus-info-section-title">🎓 Student Info</h4>
+                  <h4 className="bus-info-section-title">
+                    <GraduationCap size={18} style={{ marginRight: '8px' }} />
+                    Student Info
+                  </h4>
                   <div className="info-row">
                     <span className="info-label">Adm. Number</span>
                     <span className="info-value">{child.adm_number}</span>

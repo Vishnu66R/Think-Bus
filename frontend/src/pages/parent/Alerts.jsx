@@ -6,14 +6,15 @@
 // ----------------------------------------
 
 import { useState, useEffect } from "react";
+import { ShieldAlert, AlertTriangle, Info, Bell } from "lucide-react";
 import { fetchParentAlerts } from "../../api";
 import "./ParentPages.css";
 
 // Icon and color map for alert types
 const ALERT_STYLES = {
-  danger:  { icon: "🚨", bg: "#fee2e2", border: "#fca5a5", color: "#991b1b" },
-  warning: { icon: "⚠️", bg: "#fef3c7", border: "#fde68a", color: "#92400e" },
-  info:    { icon: "ℹ️", bg: "#dbeafe", border: "#93c5fd", color: "#1e40af" },
+  danger:  { icon: <ShieldAlert size={24} />,    bg: "#fee2e2", border: "#fca5a5", color: "#991b1b" },
+  warning: { icon: <AlertTriangle size={24} />, bg: "#fef3c7", border: "#fde68a", color: "#92400e" },
+  info:    { icon: <Info size={24} />,          bg: "#dbeafe", border: "#93c5fd", color: "#1e40af" },
 };
 
 function Alerts() {
@@ -75,7 +76,9 @@ function Alerts() {
 
       {alerts.length === 0 ? (
         <div className="empty-state">
-          <span className="empty-icon">🔔</span>
+          <span className="empty-icon">
+            <Bell size={48} />
+          </span>
           <p>No alerts at this time. Everything is running smoothly!</p>
         </div>
       ) : (

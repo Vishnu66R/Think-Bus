@@ -5,15 +5,22 @@
 // ----------------------------------------
 
 import { useState, useEffect } from "react";
+import { 
+  CheckCircle, 
+  Clock, 
+  Wrench, 
+  AlertOctagon, 
+  XCircle 
+} from "lucide-react";
 import { fetchDriverStatus, updateDriverStatus } from "../../api";
 import "./DriverPages.css";
 
 // Status options with colors
 const STATUS_OPTIONS = [
-  { value: "Active",      icon: "🟢", color: "#16a34a", bg: "#dcfce7", label: "Active — On Route" },
-  { value: "Idle",        icon: "🟡", color: "#d97706", bg: "#fef3c7", label: "Idle — Waiting" },
-  { value: "Maintenance", icon: "🔧", color: "#6366f1", bg: "#eef2ff", label: "Maintenance — Under Repair" },
-  { value: "Breakdown",   icon: "🔴", color: "#dc2626", bg: "#fee2e2", label: "Breakdown — Out of Service" },
+  { value: "Active",      icon: <CheckCircle size={24} />,    color: "#16a34a", bg: "#dcfce7", label: "Active — On Route" },
+  { value: "Idle",        icon: <Clock size={24} />,          color: "#d97706", bg: "#fef3c7", label: "Idle — Waiting" },
+  { value: "Maintenance", icon: <Wrench size={24} />,         color: "#6366f1", bg: "#eef2ff", label: "Maintenance — Under Repair" },
+  { value: "Breakdown",   icon: <AlertOctagon size={24} />,    color: "#dc2626", bg: "#fee2e2", label: "Breakdown — Out of Service" },
 ];
 
 function Status() {
@@ -95,7 +102,9 @@ function Status() {
 
       {/* Current status display */}
       <div className="status-current-card" style={{ background: activeOption.bg, borderColor: activeOption.color }}>
-        <span className="status-current-icon">{activeOption.icon}</span>
+        <span className="status-current-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {activeOption.icon}
+        </span>
         <div className="status-current-info">
           <span className="status-current-label">Current Status</span>
           <span className="status-current-value" style={{ color: activeOption.color }}>
@@ -108,7 +117,10 @@ function Status() {
       {/* Message */}
       {message && (
         <div className={`status-message ${message.type === "success" ? "msg--success" : "msg--error"}`}>
-          {message.type === "success" ? "✅" : "❌"} {message.text}
+          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {message.type === "success" ? <CheckCircle size={18} /> : <XCircle size={18} />}
+            {message.text}
+          </span>
         </div>
       )}
 
@@ -126,7 +138,9 @@ function Status() {
             onClick={() => handleStatusChange(opt.value)}
             disabled={updating || currentStatus === opt.value}
           >
-            <span className="status-opt-icon">{opt.icon}</span>
+            <span className="status-opt-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {opt.icon}
+            </span>
             <span className="status-opt-label" style={{ color: currentStatus === opt.value ? opt.color : "#334155" }}>
               {opt.value}
             </span>

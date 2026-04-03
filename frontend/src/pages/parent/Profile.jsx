@@ -5,6 +5,12 @@
 // ----------------------------------------
 
 import { useState, useEffect } from "react";
+import { 
+  User, 
+  Mail, 
+  Phone, 
+  Home 
+} from "lucide-react";
 import { fetchParentProfile } from "../../api";
 import "./ParentPages.css";
 
@@ -53,7 +59,9 @@ function Profile() {
       <div className="profile-card">
         {/* Avatar */}
         <div className="profile-avatar">
-          <span className="profile-avatar-icon">👤</span>
+          <span className="profile-avatar-icon">
+            <User size={40} />
+          </span>
           <h3 className="profile-name">{profile.full_name}</h3>
           <span className="profile-role-badge">Parent</span>
         </div>
@@ -61,19 +69,31 @@ function Profile() {
         {/* Details */}
         <div className="profile-details">
           <div className="profile-row">
-            <span className="profile-label">👤 Full Name</span>
+            <span className="profile-label">
+              <User size={18} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              Full Name
+            </span>
             <span className="profile-value">{profile.full_name}</span>
           </div>
           <div className="profile-row">
-            <span className="profile-label">📧 Username</span>
+            <span className="profile-label">
+              <Mail size={18} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              Username
+            </span>
             <span className="profile-value">{profile.username}</span>
           </div>
           <div className="profile-row">
-            <span className="profile-label">📞 Phone Number</span>
+            <span className="profile-label">
+              <Phone size={18} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              Phone Number
+            </span>
             <span className="profile-value">{profile.phone_number || "Not provided"}</span>
           </div>
           <div className="profile-row">
-            <span className="profile-label">🏠 Address</span>
+            <span className="profile-label">
+              <Home size={18} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              Address
+            </span>
             <span className="profile-value">{profile.address || "Not provided"}</span>
           </div>
         </div>

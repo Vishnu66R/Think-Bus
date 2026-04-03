@@ -5,6 +5,17 @@
 // ----------------------------------------
 
 import { useState, useEffect } from "react";
+import { 
+  Route, 
+  Bus, 
+  MapPin, 
+  Users, 
+  Clock, 
+  CheckCircle, 
+  AlertTriangle, 
+  Map as MapIcon, 
+  ClipboardList 
+} from "lucide-react";
 import { fetchDriverSummary } from "../../api";
 import MapView from "../../components/MapView";
 import "./DriverPages.css";
@@ -47,7 +58,9 @@ function Summary() {
     return (
       <div className="driver-page">
         <div className="empty-state">
-          <span className="empty-icon">📋</span>
+          <span className="empty-icon">
+            <ClipboardList size={48} />
+          </span>
           <p>No trip data available.</p>
         </div>
       </div>
@@ -67,7 +80,9 @@ function Summary() {
       {/* Summary cards */}
       <div className="summary-grid">
         <div className="summary-stat-card">
-          <span className="stat-icon" style={{ background: "#dbeafe", color: "#2563eb" }}>🛣️</span>
+          <span className="stat-icon" style={{ background: "#dbeafe", color: "#2563eb" }}>
+            <Route size={20} />
+          </span>
           <div className="stat-body">
             <span className="stat-value">{summary.route_name}</span>
             <span className="stat-label">Route</span>
@@ -75,7 +90,9 @@ function Summary() {
         </div>
 
         <div className="summary-stat-card">
-          <span className="stat-icon" style={{ background: "#dcfce7", color: "#16a34a" }}>🚌</span>
+          <span className="stat-icon" style={{ background: "#dcfce7", color: "#16a34a" }}>
+            <Bus size={20} />
+          </span>
           <div className="stat-body">
             <span className="stat-value">{summary.bus_number}</span>
             <span className="stat-label">Bus Number</span>
@@ -83,7 +100,9 @@ function Summary() {
         </div>
 
         <div className="summary-stat-card">
-          <span className="stat-icon" style={{ background: "#f3e8ff", color: "#7c3aed" }}>📍</span>
+          <span className="stat-icon" style={{ background: "#f3e8ff", color: "#7c3aed" }}>
+            <MapPin size={20} />
+          </span>
           <div className="stat-body">
             <span className="stat-value">{summary.total_stops}</span>
             <span className="stat-label">Total Stops</span>
@@ -91,7 +110,9 @@ function Summary() {
         </div>
 
         <div className="summary-stat-card">
-          <span className="stat-icon" style={{ background: "#fef3c7", color: "#d97706" }}>👥</span>
+          <span className="stat-icon" style={{ background: "#fef3c7", color: "#d97706" }}>
+            <Users size={20} />
+          </span>
           <div className="stat-body">
             <span className="stat-value">{summary.total_students}</span>
             <span className="stat-label">Students on Bus</span>
@@ -99,7 +120,9 @@ function Summary() {
         </div>
 
         <div className="summary-stat-card">
-          <span className="stat-icon" style={{ background: "#fce4ec", color: "#e91e63" }}>⏱️</span>
+          <span className="stat-icon" style={{ background: "#fce4ec", color: "#e91e63" }}>
+            <Clock size={20} />
+          </span>
           <div className="stat-body">
             <span className="stat-value">{summary.route_duration_mins} min</span>
             <span className="stat-label">Route Duration</span>
@@ -111,7 +134,7 @@ function Summary() {
             background: summary.bus_status === "Active" ? "#dcfce7" : "#fee2e2",
             color: summary.bus_status === "Active" ? "#16a34a" : "#dc2626"
           }}>
-            {summary.bus_status === "Active" ? "✅" : "⚠️"}
+            {summary.bus_status === "Active" ? <CheckCircle size={20} /> : <AlertTriangle size={20} />}
           </span>
           <div className="stat-body">
             <span className="stat-value">{summary.bus_status}</span>
@@ -150,7 +173,9 @@ function Summary() {
           />
         ) : (
           <div style={{ padding: '60px', textAlign: 'center', color: '#64748b' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
+            <div style={{ fontSize: '3rem', marginBottom: '12px', color: '#94a3b8' }}>
+              <MapIcon size={48} />
+            </div>
             <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map Unavailable</h3>
             <p style={{ margin: 0 }}>No GPS coordinates found for route <strong>{summary.route_name}</strong>.</p>
           </div>

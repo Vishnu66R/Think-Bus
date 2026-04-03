@@ -11,6 +11,22 @@ import {
   fetchAdminBuses,
   fetchAdminBusStops
 } from "../../api";
+import { 
+  LayoutDashboard, 
+  Bus, 
+  Users, 
+  Zap, 
+  Search, 
+  GraduationCap, 
+  User, 
+  Map as MapIcon, 
+  Bot, 
+  AlertTriangle, 
+  Info, 
+  CheckCircle, 
+  X,
+  Clock
+} from "lucide-react";
 import MapView from "../../components/MapView";
 import "./Dashboard.css";
 
@@ -20,8 +36,6 @@ function formatDate() {
     weekday: "long", year: "numeric", month: "long", day: "numeric",
   });
 }
-
-
 
 function Dashboard() {
   // ─── State ───
@@ -134,10 +148,10 @@ function Dashboard() {
 
   // ─── Stat cards config ───
   const statCards = stats ? [
-    { label: "Total Students",  value: stats.totalStudents,  icon: "🎓", gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
-    { label: "Active Buses",    value: stats.activeBuses,    icon: "🚌", gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" },
-    { label: "Total Drivers",   value: stats.totalDrivers,   icon: "🚗", gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
-    { label: "Optimization",    value: "94%",                icon: "⚡", gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" },
+    { label: "Total Students",  value: stats.totalStudents,  icon: <GraduationCap size={28} />, gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
+    { label: "Active Buses",    value: stats.activeBuses,    icon: <Bus size={28} />, gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" },
+    { label: "Total Drivers",   value: stats.totalDrivers,   icon: <User size={28} />, gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
+    { label: "Optimization",    value: "94%",                icon: <Zap size={28} />, gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" },
   ] : [];
 
   // ─── Loading ───
@@ -157,7 +171,9 @@ function Dashboard() {
       <div className="dash-topbar" id="dash-topbar">
         {/* Search */}
         <div className="dash-search-wrapper" ref={searchRef}>
-          <span className="dash-search-icon">🔍</span>
+          <span className="dash-search-icon">
+            <Search size={20} />
+          </span>
           <input
             id="global-search"
             type="text"
@@ -174,12 +190,16 @@ function Dashboard() {
               <div className="search-results-header">
                 <h3>Search Results</h3>
                 <span className="search-results-count">{totalResults} result{totalResults !== 1 ? "s" : ""} found</span>
-                <button className="search-close-btn" onClick={() => { setSearchOpen(false); setSearchQuery(""); }}>✕ Clear</button>
+                <button className="search-close-btn" onClick={() => { setSearchOpen(false); setSearchQuery(""); }}>
+                  <X size={16} style={{ marginRight: '4px' }} /> Clear
+                </button>
               </div>
 
               {totalResults === 0 && (
                 <div className="search-no-results">
-                  <span className="search-no-icon">🔍</span>
+                  <span className="search-no-icon">
+                    <Search size={40} />
+                  </span>
                   <p>No results found for "<strong>{searchQuery}</strong>"</p>
                   <p className="search-no-hint">Try a different name, admission number, or registration number</p>
                 </div>
@@ -188,11 +208,15 @@ function Dashboard() {
               {/* Student Cards */}
               {searchResults.students.length > 0 && (
                 <div className="search-card-group">
-                  <h4 className="search-card-group-title">🎓 Students</h4>
+                  <h4 className="search-card-group-title">
+                    <GraduationCap size={18} style={{ marginRight: '8px' }} /> Students
+                  </h4>
                   <div className="search-cards-grid">
                     {searchResults.students.map((s) => (
                       <div className="search-detail-card student-card" key={`s-${s.id}`}>
-                        <div className="sdc-avatar">🎓</div>
+                        <div className="sdc-avatar">
+                          <User size={20} />
+                        </div>
                         <div className="sdc-info">
                           <h4 className="sdc-name">{s.full_name}</h4>
                           <div className="sdc-details">
@@ -210,11 +234,15 @@ function Dashboard() {
               {/* Bus Cards */}
               {searchResults.buses.length > 0 && (
                 <div className="search-card-group">
-                  <h4 className="search-card-group-title">🚌 Buses</h4>
+                  <h4 className="search-card-group-title">
+                    <Bus size={18} style={{ marginRight: '8px' }} /> Buses
+                  </h4>
                   <div className="search-cards-grid">
                     {searchResults.buses.map((b) => (
                       <div className="search-detail-card bus-card" key={`b-${b.id}`}>
-                        <div className="sdc-avatar">🚌</div>
+                        <div className="sdc-avatar">
+                          <Bus size={20} />
+                        </div>
                         <div className="sdc-info">
                           <h4 className="sdc-name">{b.registration_number}</h4>
                           <div className="sdc-details">
@@ -231,11 +259,15 @@ function Dashboard() {
               {/* Driver Cards */}
               {searchResults.drivers.length > 0 && (
                 <div className="search-card-group">
-                  <h4 className="search-card-group-title">🚗 Drivers</h4>
+                  <h4 className="search-card-group-title">
+                    <User size={18} style={{ marginRight: '8px' }} /> Drivers
+                  </h4>
                   <div className="search-cards-grid">
                     {searchResults.drivers.map((d) => (
                       <div className="search-detail-card driver-card" key={`d-${d.id}`}>
-                        <div className="sdc-avatar">🚗</div>
+                        <div className="sdc-avatar">
+                          <User size={20} />
+                        </div>
                         <div className="sdc-info">
                           <h4 className="sdc-name">{d.full_name}</h4>
                           <div className="sdc-details">
@@ -254,7 +286,7 @@ function Dashboard() {
 
         {/* Welcome */}
         <div className="dash-welcome" id="dash-welcome">
-          <span className="dash-welcome-text">Welcome, Admin 👋</span>
+          <span className="dash-welcome-text">Welcome, Admin</span>
           <span className="dash-welcome-date">{formatDate()}</span>
         </div>
       </div>
@@ -281,7 +313,7 @@ function Dashboard() {
         <div className="admin-map-card" id="admin-map-card" style={{ display: 'flex', flexDirection: 'column', padding: '16px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', width: '100%', boxSizing: 'border-box' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', width: '100%' }}>
             <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>🗺️</span> Live Bus Tracking
+              <MapIcon size={24} /> Live Bus Tracking
             </h3>
             <select 
               value={selectedBusId} 
@@ -293,7 +325,8 @@ function Dashboard() {
                 fontSize: '0.9rem',
                 outline: 'none',
                 cursor: 'pointer',
-                backgroundColor: '#f8fafc'
+                backgroundColor: '#f8fafc',
+                fontFamily: 'inherit'
               }}
             >
               {buses.map(b => (
@@ -314,7 +347,9 @@ function Dashboard() {
             ) : selectedBusId ? (
               <div style={{ display: 'flex', height: '500px', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', background: '#f8fafc' }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '2rem', marginBottom: '10px' }}>⏳</div>
+                  <div style={{ fontSize: '2rem', marginBottom: '10px' }}>
+                    <Clock size={40} className="spin-slow" />
+                  </div>
                   <p>Loading route data for this bus...</p>
                 </div>
               </div>
@@ -329,29 +364,38 @@ function Dashboard() {
         {/* ML Alerts Placeholder */}
         <div className="ml-alerts-panel" id="ml-alerts-panel">
           <div className="ml-alerts-header">
-            <h3>🤖 AI Alerts</h3>
+            <h3><Bot size={22} style={{ marginRight: '8px', verticalAlign: 'middle' }} /> AI Alerts</h3>
             <span className="ml-badge">ML Engine</span>
           </div>
           <div className="ml-alerts-list">
             <div className="ml-alert-item ml-alert-warning">
               <span className="ml-pulse"></span>
-              <div>
-                <p className="ml-alert-title">Route 3 Congestion Predicted</p>
-                <p className="ml-alert-desc">High traffic expected at 8:15 AM on Mevarom route</p>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <AlertTriangle size={20} style={{ color: 'var(--color-warning, #f59e0b)', flexShrink: 0 }} />
+                <div>
+                  <p className="ml-alert-title">Route 3 Congestion Predicted</p>
+                  <p className="ml-alert-desc">High traffic expected at 8:15 AM on Mevarom route</p>
+                </div>
               </div>
             </div>
             <div className="ml-alert-item ml-alert-info">
               <span className="ml-pulse pulse-blue"></span>
-              <div>
-                <p className="ml-alert-title">Optimization Suggestion</p>
-                <p className="ml-alert-desc">Rerouting Bus 5 can save 12 mins avg travel time</p>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <Info size={20} style={{ color: 'var(--color-info, #3b82f6)', flexShrink: 0 }} />
+                <div>
+                  <p className="ml-alert-title">Optimization Suggestion</p>
+                  <p className="ml-alert-desc">Rerouting Bus 5 can save 12 mins avg travel time</p>
+                </div>
               </div>
             </div>
             <div className="ml-alert-item ml-alert-success">
               <span className="ml-pulse pulse-green"></span>
-              <div>
-                <p className="ml-alert-title">All Routes On-Time</p>
-                <p className="ml-alert-desc">Morning shift completed with 98% punctuality</p>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <CheckCircle size={20} style={{ color: 'var(--color-success, #10b981)', flexShrink: 0 }} />
+                <div>
+                  <p className="ml-alert-title">All Routes On-Time</p>
+                  <p className="ml-alert-desc">Morning shift completed with 98% punctuality</p>
+                </div>
               </div>
             </div>
           </div>

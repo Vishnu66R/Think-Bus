@@ -4,12 +4,15 @@
 // Placeholder for now.
 // -------------------------------------------
 
+import { Settings } from "lucide-react";
 import "./PlaceholderPage.css";
 
 function SystemConfig() {
   return (
     <div className="placeholder-page" id="system-config-page">
-      <div className="placeholder-icon">⚙️</div>
+      <div className="placeholder-icon">
+        <Settings size={48} />
+      </div>
       <h2 className="placeholder-title">System Configuration</h2>
       <p className="placeholder-text">
         Configure system settings, manage user permissions,

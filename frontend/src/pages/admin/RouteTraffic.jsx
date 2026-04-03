@@ -5,6 +5,21 @@
 // -------------------------------------------
 
 import { useState, useEffect } from "react";
+import { 
+  Route, 
+  MapPin, 
+  Plus, 
+  Edit2, 
+  Trash2, 
+  ChevronDown, 
+  AlertTriangle, 
+  Globe, 
+  Clock, 
+  X,
+  CheckCircle,
+  XCircle,
+  Hash
+} from "lucide-react";
 import {
   fetchAdminRoutesDetailed,
   createAdminRoute,
@@ -27,7 +42,7 @@ function Toast({ message, type, onClose }) {
 
   return (
     <div className={`fm-toast ${type}`}>
-      {type === "success" ? "✅ " : "❌ "}
+      {type === "success" ? <CheckCircle size={18} style={{ marginRight: '8px' }} /> : <XCircle size={18} style={{ marginRight: '8px' }} />}
       <span>{message}</span>
     </div>
   );
@@ -246,7 +261,7 @@ function RouteTraffic() {
       <div className="rt-map-widget" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'stretch', justifyContent: 'flex-start', width: '100%', boxSizing: 'border-box' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
           <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: 'white', zIndex: 1 }}>
-            <span>🗺️</span> Global Tracking & Traffic
+            <Globe size={20} /> Global Tracking & Traffic
           </h3>
           <select 
             value={selectedBusId} 
@@ -283,7 +298,9 @@ function RouteTraffic() {
           ) : selectedBusId ? (
             <div style={{ display: 'flex', height: '500px', alignItems: 'center', justifyContent: 'center', color: '#fff', background: 'rgba(0,0,0,0.1)' }}>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '10px' }}>⏳</div>
+                <div style={{ fontSize: '2rem', marginBottom: '10px' }}>
+                  <Clock size={40} className="animate-spin-slow" />
+                </div>
                 <p>Establishing connection to live bus GPS...</p>
               </div>
             </div>
@@ -298,14 +315,16 @@ function RouteTraffic() {
       {/* Section Header */}
       <div className="rt-section-header">
         <div className="rt-section-title">
-          <div className="rt-section-icon">🛣️</div>
+          <div className="rt-section-icon">
+            <Route size={28} />
+          </div>
           <div>
             <h2>Active Routes & Traffic</h2>
             <span className="rt-badge">{routes.length} Active Routes</span>
           </div>
         </div>
         <button className="fm-add-btn" onClick={handleOpenAdd}>
-          <span>+</span> Add Route
+          <Plus size={18} style={{ marginRight: '8px' }} /> Add Route
         </button>
       </div>
 
@@ -314,7 +333,9 @@ function RouteTraffic() {
         <div className="rt-loader">Loading routes from database...</div>
       ) : routes.length === 0 ? (
         <div className="rt-empty">
-          <span className="fm-empty-icon">📍</span>
+          <span className="fm-empty-icon">
+            <MapPin size={48} />
+          </span>
           <h3>No Routes Configured</h3>
           <p>Create your first route to start organizing the bus network.</p>
         </div>
@@ -326,7 +347,9 @@ function RouteTraffic() {
               {/* Card Header (Accordion Toggle) */}
               <div className="rt-card-header" onClick={() => toggleExpand(r.id)}>
                 <div className="rt-card-info">
-                  <span className="rt-card-icon">📍</span>
+                  <span className="rt-card-icon">
+                    <MapPin size={20} />
+                  </span>
                   <div>
                     <h3 className="rt-route-name">{r.name}</h3>
                     <p className="rt-route-meta">
@@ -342,7 +365,7 @@ function RouteTraffic() {
                 <div className="rt-card-controls">
                   <button className="rt-action-btn fm-btn-edit" onClick={(e) => handleOpenEdit(r, e)}>Edit</button>
                   <button className="rt-action-btn rt-action-delete" onClick={(e) => handleRequestDelete(r, e)}>Delete</button>
-                  <span className="rt-expand-icon">▼</span>
+                  <ChevronDown size={20} className={`rt-expand-icon ${expandedRouteId === r.id ? 'rotated' : ''}`} />
                 </div>
               </div>
 
@@ -377,7 +400,9 @@ function RouteTraffic() {
           <div className="fm-modal" style={{ maxWidth: 600 }}>
             <div className="fm-modal-header">
               <h3>{modalMode === "add" ? "Create New Route" : "Edit Route"}</h3>
-              <button className="fm-close-btn" onClick={() => setModalOpen(false)}>✕</button>
+              <button className="fm-close-btn" onClick={() => setModalOpen(false)}>
+                <X size={20} />
+              </button>
             </div>
             
             <form onSubmit={handleSaveRoute}>
@@ -428,8 +453,10 @@ function RouteTraffic() {
                 {/* Sub-Stops Builder */}
                 <div className="rt-stop-builder">
                   <h4>
-                    <span>📍 Sequence of Stops</span>
-                    <button type="button" className="rt-add-stop-btn" onClick={handleAddStopField}>+ Add Stop</button>
+                    <span><MapPin size={18} style={{verticalAlign:'middle', marginRight:8}} /> Sequence of Stops</span>
+                    <button type="button" className="rt-add-stop-btn" onClick={handleAddStopField}>
+                      <Plus size={14} style={{marginRight:4}} /> Add Stop
+                    </button>
                   </h4>
                   
                   {formData.stops.map((stop, i) => (
@@ -458,7 +485,7 @@ function RouteTraffic() {
                         onClick={() => handleRemoveStopField(i)}
                         title="Remove Stop"
                       >
-                        ✕
+                        <X size={16} />
                       </button>
                     </div>
                   ))}
@@ -485,7 +512,9 @@ function RouteTraffic() {
         <div className="fm-modal-overlay">
           <div className="fm-modal confirm">
             <div className="fm-modal-body">
-              <div className="fm-confirm-icon">⚠️</div>
+              <div className="fm-confirm-icon" style={{ color: '#ef4444' }}>
+                <AlertTriangle size={48} />
+              </div>
               <h3>Confirm Deletion</h3>
               <p className="fm-confirm-text">
                 Are you sure you want to delete the route <strong>{routeToDelete.name}</strong>? 

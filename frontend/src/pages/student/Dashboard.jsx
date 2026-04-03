@@ -4,7 +4,17 @@
 // Includes auto-refresh polling every 30 seconds for live status.
 // -------------------------------------------
 
-import { useEffect, useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { 
+  AlertTriangle, 
+  Bus, 
+  MapPin, 
+  Route, 
+  CheckCircle, 
+  RefreshCw, 
+  Map as MapIcon, 
+  User 
+} from "lucide-react";
 import { fetchStudentDashboard } from "../../api";
 import MapView from "../../components/MapView";
 import "./StudentDashboard.css";
@@ -88,7 +98,9 @@ function Dashboard() {
       {/* Alert Banner — only shows when bus is rerouted */}
       {isChanged && busInfo.alert_message && (
         <div className="student-alert-banner" id="reroute-alert">
-          <span className="alert-icon">⚠️</span>
+          <span className="alert-icon">
+            <AlertTriangle size={20} />
+          </span>
           <span>{busInfo.alert_message}</span>
         </div>
       )}
@@ -96,7 +108,9 @@ function Dashboard() {
       {/* Status Cards */}
       <div className="student-cards-grid">
         <div className="student-card">
-          <div className="student-card-icon" style={{ background: "#dbeafe", color: "#1d4ed8" }}>🚌</div>
+          <div className="student-card-icon" style={{ background: "#dbeafe", color: "#1d4ed8" }}>
+            <Bus size={24} />
+          </div>
           <div className="student-card-body">
             <span className="student-card-label">Assigned Bus</span>
             <span className="student-card-value">{busInfo.bus_number}</span>
@@ -105,7 +119,9 @@ function Dashboard() {
         </div>
 
         <div className="student-card">
-          <div className="student-card-icon" style={{ background: "#dcfce7", color: "#166534" }}>🛣️</div>
+          <div className="student-card-icon" style={{ background: "#dcfce7", color: "#166534" }}>
+            <Route size={24} />
+          </div>
           <div className="student-card-body">
             <span className="student-card-label">Route</span>
             <span className="student-card-value">{busInfo.route_name}</span>
@@ -113,7 +129,9 @@ function Dashboard() {
         </div>
 
         <div className="student-card">
-          <div className="student-card-icon" style={{ background: "#fef3c7", color: "#92400e" }}>📍</div>
+          <div className="student-card-icon" style={{ background: "#fef3c7", color: "#92400e" }}>
+            <MapPin size={24} />
+          </div>
           <div className="student-card-body">
             <span className="student-card-label">Boarding Stop</span>
             <span className="student-card-value">{busInfo.stop_name}</span>
@@ -128,7 +146,7 @@ function Dashboard() {
               color: isChanged ? "#991b1b" : "#166534",
             }}
           >
-            {isChanged ? "🔄" : "✅"}
+            {isChanged ? <RefreshCw size={24} /> : <CheckCircle size={24} />}
           </div>
           <div className="student-card-body">
             <span className="student-card-label">Status</span>
@@ -143,7 +161,10 @@ function Dashboard() {
       <div className="student-details-row">
         {/* Driver Info */}
         <div className="student-detail-card">
-          <h3 className="detail-card-title">Driver Details</h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+            <User size={20} style={{ color: '#64748b' }} />
+            <h3 className="detail-card-title" style={{ margin: 0 }}>Driver Details</h3>
+          </div>
           <div className="detail-item">
             <span className="detail-label">Name</span>
             <span className="detail-value">{busInfo.driver_name}</span>
@@ -205,7 +226,9 @@ function Dashboard() {
         }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'radial-gradient(#e2e8f0 2px, transparent 2px)', backgroundSize: '20px 20px', opacity: 0.5, zIndex: 1 }}></div>
           <div style={{ position: 'relative', zIndex: 2 }}>
-            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
+            <div style={{ fontSize: '3rem', marginBottom: '12px', color: '#94a3b8' }}>
+              <MapIcon size={48} />
+            </div>
             <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map Data Unavailable</h3>
             <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>No stop coordinates found for route <strong>{busInfo.route_name}</strong>.</p>
           </div>

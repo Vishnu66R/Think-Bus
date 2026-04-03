@@ -4,7 +4,9 @@
 // Shows timestamp, type badge, and message text.
 // -----------------------------------------------
 
+
 import { useState, useEffect } from "react";
+import { AlertTriangle, CheckCircle, Info } from "lucide-react";
 import "./Notifications.css";
 
 function Notifications() {
@@ -109,7 +111,7 @@ function Notifications() {
           >
             <div className="notif-left">
               <span className={`notif-type-badge notif-${notif.type}`}>
-                {notif.type === "alert" ? "⚠️" : notif.type === "success" ? "✅" : "ℹ️"}
+                {notif.type === "alert" ? <AlertTriangle size={16} /> : notif.type === "success" ? <CheckCircle size={16} /> : <Info size={16} />}
               </span>
             </div>
             <div className="notif-body">

@@ -1,40 +1,45 @@
 // frontend/src/layouts/StudentLayout.jsx
 // ----------------------------------------
 // Layout wrapper for the student panel.
-// Composes the reusable Sidebar, Header, and page Outlet.
 // ----------------------------------------
 
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import "../layouts/AdminLayout.css"; // Reuse the same layout grid CSS
+import "../layouts/AdminLayout.css";
 
-// Student-specific navigation items
+import { 
+  LayoutDashboard, 
+  Ticket, 
+  Map, 
+  Bell, 
+  User 
+} from "lucide-react";
+
 const STUDENT_NAV_ITEMS = [
-  { path: "/student/dashboard",     label: "Dashboard",     icon: "📊" },
-  { path: "/student/pass",          label: "My Bus Pass",   icon: "🎫" },
-  { path: "/student/planner",       label: "Planner",       icon: "🗺️" },
-  { path: "/student/notifications", label: "Notifications", icon: "🔔" },
-  { path: "/student/profile",       label: "Profile",       icon: "👤" },
+  { path: "/student/dashboard",     label: "Dashboard",     icon: <LayoutDashboard size={20} /> },
+  { path: "/student/pass",          label: "My Bus Pass",   icon: <Ticket size={20} /> },
+  { path: "/student/planner",       label: "Planner",       icon: <Map size={20} /> },
+  { path: "/student/notifications", label: "Notifications", icon: <Bell size={20} /> },
+  { path: "/student/profile",       label: "Profile",       icon: <User size={20} /> },
 ];
 
-function StudentLayout({ onLogout, username }) {
+function StudentLayout({ onLogout, username, theme, onToggleTheme }) {
   return (
     <div className="admin-layout" id="student-layout">
-      {/* Sidebar with student-specific navigation */}
       <Sidebar
         onLogout={onLogout}
         navItems={STUDENT_NAV_ITEMS}
         brandTitle="ThinkBus"
         brandSubtitle="Student Panel"
       />
-
-      {/* Main Content Area */}
       <div className="admin-main">
         <Header
-          title="Think-Bus"
+          title="Student Portal"
           username={username}
           role="Student"
+          theme={theme}
+          onToggleTheme={onToggleTheme}
         />
         <main className="admin-content">
           <Outlet />

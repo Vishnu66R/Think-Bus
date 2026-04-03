@@ -4,7 +4,9 @@
 // Students can browse available routes.
 // -------------------------------------------
 
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { Bus, Map } from "lucide-react";
 import "./Planner.css";
 
 // Routes and stops data matching the database
@@ -59,7 +61,9 @@ function Planner() {
               className={`route-list-item ${selectedRoute?.id === route.id ? "selected" : ""}`}
               onClick={() => setSelectedRoute(route)}
             >
-              <div className="route-list-icon">🚌</div>
+              <div className="route-list-icon">
+                <Bus size={20} />
+              </div>
               <div className="route-list-info">
                 <span className="route-list-name">Route {route.id}: {route.name}</span>
                 <span className="route-list-meta">{route.stops.length} stops · {route.duration}</span>
@@ -91,7 +95,9 @@ function Planner() {
             </>
           ) : (
             <div className="route-detail-empty">
-              <span className="empty-icon">🗺️</span>
+              <span className="empty-icon">
+                <Map size={48} />
+              </span>
               <p>Select a route to view its stops</p>
             </div>
           )}

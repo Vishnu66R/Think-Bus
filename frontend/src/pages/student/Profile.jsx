@@ -5,6 +5,12 @@
 // -------------------------------------------
 
 import { useState, useEffect } from "react";
+import { 
+  User, 
+  GraduationCap, 
+  Bus, 
+  Phone 
+} from "lucide-react";
 import "./Profile.css";
 
 function Profile() {
@@ -52,7 +58,9 @@ function Profile() {
         {/* Profile Card */}
         <div className="profile-card-main">
           <div className="profile-avatar-section">
-            <div className="profile-avatar">🎒</div>
+            <div className="profile-avatar">
+              <User size={40} />
+            </div>
             <h3 className="profile-name">{profile.fullName}</h3>
             <span className="profile-adm">{profile.admNumber}</span>
             <span className={`profile-status ${profile.isActive ? "active" : ""}`}>
@@ -65,7 +73,10 @@ function Profile() {
         <div className="profile-details-col">
           {/* Academic Info */}
           <div className="profile-section">
-            <h3 className="profile-section-title">🎓 Academic Information</h3>
+            <h3 className="profile-section-title">
+              <GraduationCap size={20} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              Academic Information
+            </h3>
             <div className="profile-grid">
               <div className="profile-field">
                 <span className="field-label">Full Name</span>
@@ -88,7 +99,10 @@ function Profile() {
 
           {/* Transport Info */}
           <div className="profile-section">
-            <h3 className="profile-section-title">🚌 Transport Information</h3>
+            <h3 className="profile-section-title">
+              <Bus size={20} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              Transport Information
+            </h3>
             <div className="profile-grid">
               <div className="profile-field">
                 <span className="field-label">Bus Number</span>
@@ -107,7 +121,10 @@ function Profile() {
 
           {/* Contact Info */}
           <div className="profile-section">
-            <h3 className="profile-section-title">📞 Contact Information</h3>
+            <h3 className="profile-section-title">
+              <Phone size={20} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              Contact Information
+            </h3>
             <div className="profile-grid">
               <div className="profile-field">
                 <span className="field-label">Email</span>

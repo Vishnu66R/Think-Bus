@@ -1,24 +1,21 @@
 /* frontend/src/pages/student/Notifications.css */
-/* ------------------------------------------------ */
-/* Styles for the notifications page               */
-/* ------------------------------------------------ */
+/* Neon Glassmorphism — Notifications */
 
-.notif-header {
-  margin-bottom: 24px;
-}
+.notif-header { margin-bottom: 24px; }
+
 .notif-title {
   font-size: 1.6rem;
-  font-weight: 700;
-  color: #0f172a;
+  font-weight: 800;
+  color: var(--text-primary);
   margin: 0 0 4px;
 }
+
 .notif-desc {
-  font-size: 0.9rem;
-  color: #64748b;
+  font-size: 0.875rem;
+  color: var(--text-muted);
   margin: 0;
 }
 
-/* Notification List */
 .notif-list {
   display: flex;
   flex-direction: column;
@@ -26,51 +23,53 @@
 }
 
 .notif-item {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
   padding: 16px 20px;
   display: flex;
   align-items: flex-start;
   gap: 14px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--transition-fast);
   position: relative;
 }
+
 .notif-item:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: var(--bg-hover);
+  border-color: var(--color-primary);
+  transform: translateX(4px);
 }
+
 .notif-item.unread {
-  background: #f0f7ff;
-  border-color: #bfdbfe;
+  background: rgba(var(--color-primary-rgb), 0.08);
+  border-color: rgba(var(--color-primary-rgb), 0.25);
 }
 
-.notif-left {
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-.notif-type-badge {
-  font-size: 1.2rem;
-}
+.notif-left { flex-shrink: 0; margin-top: 2px; }
+.notif-type-badge { font-size: 1.2rem; }
 
-.notif-body {
-  flex: 1;
-}
+.notif-body { flex: 1; }
+
 .notif-item-title {
   font-size: 0.9rem;
-  font-weight: 600;
-  color: #1e293b;
+  font-weight: 700;
+  color: var(--text-primary);
   margin: 0 0 4px;
 }
+
 .notif-item-message {
   font-size: 0.82rem;
-  color: #475569;
+  color: var(--text-secondary);
   margin: 0 0 8px;
   line-height: 1.5;
 }
+
 .notif-timestamp {
   font-size: 0.72rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
@@ -78,7 +77,9 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: var(--color-primary);
   flex-shrink: 0;
   margin-top: 8px;
+  box-shadow: 0 0 8px rgba(var(--color-primary-rgb), 0.6);
+  animation: pulse-glow 2s ease-in-out infinite;
 }

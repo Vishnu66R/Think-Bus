@@ -1,0 +1,5 @@
+src/pages/parent/Children.jsx
+src/pages/student/MyBusPass.jsx
+src/pages/student/Notifications.jsx
+src/pages/student/Planner.jsx
+src/pages/student/Profile.jsx

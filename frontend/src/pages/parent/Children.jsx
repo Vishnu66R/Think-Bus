@@ -6,6 +6,7 @@
 // ----------------------------------------
 
 import { useState, useEffect } from "react";
+import { GraduationCap, BookOpen, Calendar, Bus, Route, MapPin, User, Phone, ChevronLeft } from "lucide-react";
 import { fetchParentChildren } from "../../api";
 import "./ParentPages.css";
 
@@ -98,56 +99,72 @@ function Children() {
 
             <div className="child-detail-grid">
               <div className="child-detail-item">
-                <span className="detail-icon">🎓</span>
+                <span className="detail-icon">
+                  <GraduationCap size={20} />
+                </span>
                 <div>
                   <span className="detail-label">Admission No.</span>
                   <span className="detail-value">{selected.adm_number}</span>
                 </div>
               </div>
               <div className="child-detail-item">
-                <span className="detail-icon">📚</span>
+                <span className="detail-icon">
+                  <BookOpen size={20} />
+                </span>
                 <div>
                   <span className="detail-label">Department</span>
                   <span className="detail-value">{selected.department}</span>
                 </div>
               </div>
               <div className="child-detail-item">
-                <span className="detail-icon">📅</span>
+                <span className="detail-icon">
+                  <Calendar size={20} />
+                </span>
                 <div>
                   <span className="detail-label">Semester</span>
                   <span className="detail-value">{selected.semester}</span>
                 </div>
               </div>
               <div className="child-detail-item">
-                <span className="detail-icon">🚌</span>
+                <span className="detail-icon">
+                  <Bus size={20} />
+                </span>
                 <div>
                   <span className="detail-label">Bus Number</span>
                   <span className="detail-value">{selected.bus_number}</span>
                 </div>
               </div>
               <div className="child-detail-item">
-                <span className="detail-icon">🛣️</span>
+                <span className="detail-icon">
+                  <Route size={20} />
+                </span>
                 <div>
                   <span className="detail-label">Route</span>
                   <span className="detail-value">{selected.route_name}</span>
                 </div>
               </div>
               <div className="child-detail-item">
-                <span className="detail-icon">📍</span>
+                <span className="detail-icon">
+                  <MapPin size={20} />
+                </span>
                 <div>
                   <span className="detail-label">Boarding Stop</span>
                   <span className="detail-value">{selected.stop_name}</span>
                 </div>
               </div>
               <div className="child-detail-item">
-                <span className="detail-icon">👨‍✈️</span>
+                <span className="detail-icon">
+                  <User size={20} />
+                </span>
                 <div>
                   <span className="detail-label">Driver</span>
                   <span className="detail-value">{selected.driver_name}</span>
                 </div>
               </div>
               <div className="child-detail-item">
-                <span className="detail-icon">📞</span>
+                <span className="detail-icon">
+                  <Phone size={20} />
+                </span>
                 <div>
                   <span className="detail-label">Driver Phone</span>
                   <span className="detail-value">{selected.driver_phone}</span>
@@ -157,7 +174,9 @@ function Children() {
           </div>
         ) : (
           <div className="empty-state">
-            <span className="empty-icon">👈</span>
+            <span className="empty-icon">
+              <ChevronLeft size={48} />
+            </span>
             <p>Select a child from the list to view details</p>
           </div>
         )}

@@ -1,0 +1,84 @@
+THINK-BUS DESIGN SYSTEM - SPECIFICATIONS
+==========================================
+
+This document serves as the master design reference for the THINK-BUS project. 
+It captures the "Neon Glassmorphism" aesthetic to ensure consistency in future versions.
+
+1. DESIGN PHILOSOPHY
+--------------------
+Style: Neon Glassmorphism
+Character: High-tech, premium, accessible, and futuristic.
+Key Features: Translucent panels (glass), glowing accents (neon), smooth transitions, 
+and a systematic dual-theme approach (Dark Mode & Pearl Neon Light Mode).
+
+2. COLOR PALETTE
+----------------
+The system uses CSS variables for theme-aware coloring.
+
+2.1 Dark Mode (Modern Slate - Default)
+- Background Main:   #0f172a
+- Background Card:   rgba(30, 41, 59, 0.75) (Glass)
+- Sidebar:           #1e293b
+- Primary Color:     #3b82f6 (Blue 500 / Cyan-like)
+- Secondary Color:   #8b5cf6 (Violet 500 / Magenta-like)
+- Success:           #22c55e (Green 500)
+- Danger:            #ef4444 (Red 500)
+- Text Primary:      #f1f5f9
+- Text Secondary:    #94a3b8
+
+2.2 Light Mode (Pearl Neon)
+- Background Main:   #f8fafc
+- Background Card:   rgba(255, 255, 255, 0.85)
+- Sidebar:           #ffffff
+- Primary Color:     #2563eb (Blue 600)
+- Secondary Color:   #7c3aed (Violet 600)
+- Text Primary:      #0f172a
+- Text Secondary:    #475569
+
+3. GLASSMORPHISM PROPERTIES
+---------------------------
+To achieve the 'Glass' effect, apply these properties to panels:
+- Backdrop Filter:   blur(12px) [Dark] / blur(10px) [Light]
+- Border:            1px solid rgba(255, 255, 255, 0.08) [Dark]
+- Reflection:        linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0))
+- Box Shadow:        0 4px 24px -6px rgba(0, 0, 0, 0.4)
+
+4. TYPOGRAPHY
+-------------
+- Font Family:       "Outfit", "Inter", sans-serif (Google Fonts)
+- Base Size:         16px (Dark) / 18px (Light)
+- Smoothing:         Antialiased
+
+5. CORE UI COMPONENTS
+---------------------
+5.1 GlassCard
+- Translucent white/slate background.
+- Rounded corners: 16px.
+- Hover effect: transform: translateY(-4px), increased shadow.
+
+5.2 NeonButton
+- Rounded corners: 12px.
+- Weight: 600 (Semibold).
+- Cyan Variant: bg: --color-primary, glow: 0 2px 8px rgba(59, 130, 246, 0.2).
+- Magenta Variant: bg: --color-secondary, glow: 0 2px 8px rgba(139, 92, 246, 0.2).
+- Ghost Variant: Transparent bg, primary border, subtle hover tint.
+
+5.3 ModernSidebar
+- Collapsible width.
+- Section-based grouping.
+- Active indicators: Vertical markers/glows in primary/secondary colors.
+
+6. INTERACTION & ANIMATION
+--------------------------
+- Transitions: 0.2s - 0.3s ease-in-out for all interactive elements.
+- Page Entrance: 0.5s ease-out 'fadeInSlide' (opacity: 0 -> 1, translateY: 10px -> 0).
+- Input Focus: Subtle neon border glow (1px solid var(--color-primary)).
+
+7. IMPLEMENTATION NOTES
+-----------------------
+- Global theme is controlled via [data-theme="light"] attribute on <html> or <body>.
+- Always use CSS variables (e.g., var(--bg-main)) instead of hardcoded hex values to ensure theme compatibility.
+- Use 'Outfit' for headings to maintain the high-tech look.
+
+==========================================
+END OF DESIGN SPECIFICATIONS

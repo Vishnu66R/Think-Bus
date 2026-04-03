@@ -4,6 +4,19 @@
 // -------------------------------------------
 
 import { useState, useEffect } from "react";
+import { 
+  Bus, 
+  Users, 
+  Route, 
+  User, 
+  Edit2, 
+  Trash2, 
+  CheckCircle, 
+  XCircle, 
+  AlertTriangle, 
+  X,
+  Plus
+} from "lucide-react";
 import {
   fetchAdminBuses,
   createAdminBus,
@@ -23,7 +36,7 @@ function Toast({ message, type, onClose }) {
 
   return (
     <div className={`fm-toast ${type}`}>
-      {type === "success" ? "✅ " : "❌ "}
+      {type === "success" ? <CheckCircle size={18} style={{ marginRight: '8px' }} /> : <XCircle size={18} style={{ marginRight: '8px' }} />}
       <span>{message}</span>
     </div>
   );
@@ -192,14 +205,16 @@ function FleetManager() {
       {/* Header */}
       <div className="fm-header">
         <div className="fm-title">
-          <div className="fm-title-icon">🚌</div>
+          <div className="fm-title-icon">
+            <Bus size={28} />
+          </div>
           <div>
             <h2>Fleet Manager</h2>
             <span className="fm-stats-badge">{buses.length} Total Buses</span>
           </div>
         </div>
         <button className="fm-add-btn" onClick={handleOpenAdd}>
-          <span>+</span> Add New Bus
+          <Plus size={18} style={{ marginRight: '8px' }} /> Add New Bus
         </button>
       </div>
 
@@ -208,7 +223,9 @@ function FleetManager() {
         <div className="fm-loader">Fetching fleet data from database...</div>
       ) : buses.length === 0 ? (
         <div className="fm-empty">
-          <span className="fm-empty-icon">🚌</span>
+          <span className="fm-empty-icon">
+            <Bus size={48} />
+          </span>
           <h3>No Buses Found</h3>
           <p>Your fleet database is currently empty. Add a bus to get started.</p>
         </div>
@@ -220,7 +237,9 @@ function FleetManager() {
               <div className="fm-card-header">
                 <div>
                   <h3 className="fm-bus-number">
-                    <span className="fm-bus-number-icon">🚌</span> {bus.registration_number}
+                    <span className="fm-bus-number-icon">
+                      <Bus size={18} />
+                    </span> {bus.registration_number}
                   </h3>
                   <span className="fm-bus-id">ID: #{bus.id}</span>
                 </div>
@@ -232,12 +251,16 @@ function FleetManager() {
               {/* Card Details */}
               <div className="fm-card-body">
                 <div className="fm-detail">
-                  <span className="fm-detail-icon">👥</span>
+                  <span className="fm-detail-icon">
+                    <Users size={16} />
+                  </span>
                   <span>Capacity: <span className="fm-detail-value">{bus.capacity} seats</span></span>
                 </div>
                 
                 <div className="fm-detail">
-                  <span className="fm-detail-icon">🗺️</span>
+                  <span className="fm-detail-icon">
+                    <Route size={16} />
+                  </span>
                   <span>Route: {bus.routes?.name ? (
                      <span className="fm-detail-value">{bus.routes.name}</span>
                   ) : (
@@ -246,7 +269,9 @@ function FleetManager() {
                 </div>
 
                 <div className="fm-detail">
-                  <span className="fm-detail-icon">👨‍✈️</span>
+                  <span className="fm-detail-icon">
+                    <User size={16} />
+                  </span>
                   <span>Driver: {bus.drivers?.full_name ? (
                      <span className="fm-detail-value">{bus.drivers.full_name}</span>
                   ) : (
@@ -258,10 +283,10 @@ function FleetManager() {
               {/* Card Actions */}
               <div className="fm-card-footer">
                 <button className="fm-action-btn fm-btn-edit" onClick={() => handleOpenEdit(bus)}>
-                  ✏️ Edit
+                  <Edit2 size={14} style={{ marginRight: '4px' }} /> Edit
                 </button>
                 <button className="fm-action-btn fm-btn-delete" onClick={() => handleRequestDelete(bus)}>
-                  🗑️ Delete
+                  <Trash2 size={14} style={{ marginRight: '4px' }} /> Delete
                 </button>
               </div>
             </div>
@@ -275,7 +300,9 @@ function FleetManager() {
           <div className="fm-modal">
             <div className="fm-modal-header">
               <h3>{modalMode === "add" ? "Add New Bus" : "Edit Bus Details"}</h3>
-              <button className="fm-close-btn" onClick={() => setModalOpen(false)}>✕</button>
+              <button className="fm-close-btn" onClick={() => setModalOpen(false)}>
+                <X size={20} />
+              </button>
             </div>
             
             <form onSubmit={handleSaveBus}>
@@ -361,7 +388,9 @@ function FleetManager() {
         <div className="fm-modal-overlay">
           <div className="fm-modal confirm">
             <div className="fm-modal-body">
-              <div className="fm-confirm-icon">⚠️</div>
+              <div className="fm-confirm-icon" style={{ color: '#ef4444' }}>
+                <AlertTriangle size={48} />
+              </div>
               <h3>Confirm Deletion</h3>
               <p className="fm-confirm-text">
                 Are you sure you want to delete bus <strong>{busToDelete.registration_number}</strong>? 

@@ -1,81 +1,84 @@
 /* frontend/src/pages/student/MyBusPass.css */
-/* ------------------------------------------ */
-/* Styles for the digital bus pass card       */
-/* ------------------------------------------ */
+/* Neon Glassmorphism — Digital Bus Pass */
 
-.bus-pass-page {
-  max-width: 600px;
-}
+.bus-pass-page { max-width: 600px; }
 
-.bus-pass-header {
-  margin-bottom: 24px;
-}
+.bus-pass-header { margin-bottom: 24px; }
+
 .bus-pass-page-title {
   font-size: 1.6rem;
-  font-weight: 700;
-  color: #0f172a;
+  font-weight: 800;
+  color: var(--text-primary);
   margin: 0 0 4px;
+  font-family: var(--font-primary);
 }
+
 .bus-pass-page-desc {
-  font-size: 0.9rem;
-  color: #64748b;
+  font-size: 0.875rem;
+  color: var(--text-muted);
   margin: 0;
 }
 
-/* The Pass Card */
+/* The Pass Card — Keep gradient look — dark base always */
 .bus-pass-card {
   background: linear-gradient(135deg, #1e3a5f, #0f172a);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   color: #ffffff;
-  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.25);
+  box-shadow: var(--glass-shadow-lg), 0 0 40px rgba(var(--color-primary-rgb), 0.15);
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Card Top */
 .pass-card-top {
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
+
 .pass-brand {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-.pass-logo {
-  font-size: 2rem;
-}
+
+.pass-logo { font-size: 2rem; filter: drop-shadow(0 0 8px rgba(59,130,246,0.6)); }
+
 .pass-college {
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
   color: #ffffff;
 }
+
 .pass-system {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.5);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
+
 .pass-status {
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: var(--radius-full);
   font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
+
 .pass-status.active {
-  background: #22c55e;
+  background: var(--color-success);
   color: #ffffff;
+  box-shadow: 0 0 12px rgba(var(--color-success-rgb), 0.5);
 }
+
 .pass-status.inactive {
-  background: #ef4444;
+  background: var(--color-danger);
   color: #ffffff;
 }
 
-/* Card Body */
 .pass-card-body {
   padding: 24px;
   display: flex;
@@ -90,25 +93,29 @@
   gap: 6px;
   min-width: 100px;
 }
+
 .pass-photo {
   width: 72px;
   height: 72px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
+  box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.3);
 }
+
 .pass-name {
   font-size: 0.85rem;
   font-weight: 700;
   text-align: center;
 }
+
 .pass-adm {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.55);
 }
 
 .pass-details-grid {
@@ -117,39 +124,37 @@
   gap: 14px 20px;
   flex: 1;
 }
+
 .pass-detail {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
+
 .pass-detail-label {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.45);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
+
 .pass-detail-value {
   font-size: 0.9rem;
   font-weight: 600;
   color: #ffffff;
 }
 
-/* Card Footer */
 .pass-card-footer {
   padding: 12px 24px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0,0,0,0.25);
   display: flex;
   justify-content: space-between;
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.35);
+  border-top: 1px solid rgba(255,255,255,0.06);
 }
 
 @media (max-width: 600px) {
-  .pass-card-body {
-    flex-direction: column;
-    align-items: center;
-  }
-  .pass-details-grid {
-    width: 100%;
-  }
+  .pass-card-body { flex-direction: column; align-items: center; }
+  .pass-details-grid { width: 100%; }
 }

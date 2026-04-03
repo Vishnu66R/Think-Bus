@@ -9,18 +9,18 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import "./AdminLayout.css";
 
-function AdminLayout({ onLogout, username }) {
+function AdminLayout({ onLogout, username, theme, onToggleTheme }) {
   return (
     <div className="admin-layout" id="admin-layout">
-      {/* Fixed Sidebar */}
       <Sidebar onLogout={onLogout} />
-
-      {/* Main Content Area (to the right of sidebar) */}
       <div className="admin-main">
-        {/* Top Header */}
-        <Header username={username} />
-
-        {/* Page Content - dynamically rendered via React Router */}
+        <Header
+          title="Admin Dashboard"
+          username={username}
+          role="Admin"
+          theme={theme}
+          onToggleTheme={onToggleTheme}
+        />
         <main className="admin-content">
           <Outlet />
         </main>

@@ -6,6 +6,12 @@
 // ----------------------------------------
 
 import { useState, useEffect, useRef } from "react";
+import { 
+  Users, 
+  CheckCircle, 
+  AlertTriangle, 
+  Map as MapIcon 
+} from "lucide-react";
 import { fetchParentDashboard } from "../../api";
 import MapView from "../../components/MapView";
 import "./ParentPages.css";
@@ -85,14 +91,18 @@ function Dashboard() {
       {/* Summary cards */}
       <div className="summary-cards">
         <div className="summary-card">
-          <span className="summary-icon" style={{ background: "#dbeafe", color: "#2563eb" }}>👧</span>
+          <span className="summary-icon" style={{ background: "#dbeafe", color: "#2563eb" }}>
+            <Users size={24} />
+          </span>
           <div className="summary-body">
             <span className="summary-value">{data.total_children}</span>
             <span className="summary-label">Total Children</span>
           </div>
         </div>
         <div className="summary-card">
-          <span className="summary-icon" style={{ background: "#dcfce7", color: "#16a34a" }}>✅</span>
+          <span className="summary-icon" style={{ background: "#dcfce7", color: "#16a34a" }}>
+            <CheckCircle size={24} />
+          </span>
           <div className="summary-body">
             <span className="summary-value">{data.active_children}</span>
             <span className="summary-label">Active</span>
@@ -100,7 +110,7 @@ function Dashboard() {
         </div>
         <div className="summary-card">
           <span className="summary-icon" style={{ background: data.rerouted_buses > 0 ? "#fee2e2" : "#f0fdf4", color: data.rerouted_buses > 0 ? "#dc2626" : "#16a34a" }}>
-            {data.rerouted_buses > 0 ? "⚠️" : "🟢"}
+            {data.rerouted_buses > 0 ? <AlertTriangle size={24} /> : <CheckCircle size={24} />}
           </span>
           <div className="summary-body">
             <span className="summary-value">{data.rerouted_buses}</span>
@@ -187,7 +197,9 @@ function Dashboard() {
               />
             ) : (
               <div style={{ padding: '60px', textAlign: 'center', color: '#64748b' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
+                <div style={{ fontSize: '3rem', marginBottom: '12px', color: '#94a3b8' }}>
+                  <MapIcon size={48} />
+                </div>
                 <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map Data Unavailable</h3>
                 <p style={{ margin: 0 }}>No GPS coordinates found for <strong>{childData?.full_name}</strong>'s route.</p>
               </div>

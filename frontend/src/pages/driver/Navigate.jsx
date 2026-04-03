@@ -5,6 +5,13 @@
 // ----------------------------------------
 
 import { useState, useEffect } from "react";
+import { 
+  Navigation, 
+  Map as MapIcon, 
+  CheckCircle, 
+  MapPin, 
+  Circle 
+} from "lucide-react";
 import { fetchDriverNavigation } from "../../api";
 import MapView from "../../components/MapView";
 import "./DriverPages.css";
@@ -48,7 +55,9 @@ function Navigate() {
     return (
       <div className="driver-page">
         <div className="empty-state">
-          <span className="empty-icon">🧭</span>
+          <span className="empty-icon">
+            <Navigation size={48} />
+          </span>
           <p>No route data available for navigation.</p>
         </div>
       </div>
@@ -110,14 +119,18 @@ function Navigate() {
           onClick={handlePrevStop}
           disabled={currentStopIdx === 0}
         >
-          ← Previous
+           Previous
         </button>
         <button
           className="nav-btn nav-btn--next"
           onClick={handleNextStop}
           disabled={currentStopIdx >= stops.length - 1}
         >
-          {currentStopIdx >= stops.length - 1 ? "Trip Complete ✅" : "Next Stop →"}
+          {currentStopIdx >= stops.length - 1 ? (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              Trip Complete <CheckCircle size={18} />
+            </span>
+          ) : "Next Stop →"}
         </button>
       </div>
 
@@ -133,7 +146,7 @@ function Navigate() {
             key={stop.id}
           >
             <span className="nav-stop-indicator">
-              {idx < currentStopIdx ? "✅" : idx === currentStopIdx ? "📍" : "⬜"}
+              {idx < currentStopIdx ? <CheckCircle size={18} style={{ color: '#10b981' }} /> : idx === currentStopIdx ? <MapPin size={18} style={{ color: '#3b82f6' }} /> : <Circle size={18} style={{ color: '#cbd5e1' }} />}
             </span>
             <span className="nav-stop-name">{stop.name}</span>
             <span className="nav-stop-time">{stop.time_from_start} min</span>
@@ -154,7 +167,9 @@ function Navigate() {
           />
         ) : (
           <div style={{ padding: '60px', textAlign: 'center', color: '#64748b' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
+            <div style={{ fontSize: '3rem', marginBottom: '12px', color: '#94a3b8' }}>
+              <MapIcon size={48} />
+            </div>
             <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map Unavailable</h3>
             <p style={{ margin: 0 }}>No GPS coordinates found for this route.</p>
           </div>

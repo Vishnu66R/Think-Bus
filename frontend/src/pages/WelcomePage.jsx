@@ -1,11 +1,19 @@
 import React, { useEffect } from "react";
+import { 
+  ShieldCheck, 
+  GraduationCap, 
+  Users, 
+  Bus, 
+  User,
+  AlertTriangle 
+} from "lucide-react";
 
 function WelcomePage({ username, role, onLogout }) {
   const roleEmojiMap = {
-    Admin: "🛡️",
-    Student: "🎓",
-    Parent: "👨‍👩‍👧",
-    Driver: "🚌",
+    Admin: <ShieldCheck size={64} />,
+    Student: <GraduationCap size={64} />,
+    Parent: <Users size={64} />,
+    Driver: <Bus size={64} />,
   };
 
   useEffect(() => {
@@ -188,12 +196,16 @@ function WelcomePage({ username, role, onLogout }) {
 
       {/* Glass Card */}
       <div className="glass-card">
-        <div className="welcome-emoji">{roleEmojiMap[role] || "👤"}</div>
+        <div className="welcome-emoji">{roleEmojiMap[role] || <User size={64} />}</div>
         <h1 className="welcome-heading">Welcome, {username}!</h1>
         <p className="role-text">You are logged in as: <strong>{role}</strong></p>
         
         <div className="placeholder-box">
-          🚧 This is a placeholder page. <br /> The <strong>{role}</strong> dashboard will go here.
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            <AlertTriangle size={20} />
+            <span>This is a placeholder page.</span>
+          </div>
+          The <strong>{role}</strong> dashboard will go here.
         </div>
 
         <button className="logout-btn" onClick={onLogout}>

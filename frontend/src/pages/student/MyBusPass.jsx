@@ -4,7 +4,9 @@
 // with the student's bus assignment details.
 // -------------------------------------------
 
+
 import { useState, useEffect } from "react";
+import { Bus, User } from "lucide-react";
 import "./MyBusPass.css";
 
 function MyBusPass() {
@@ -51,7 +53,9 @@ function MyBusPass() {
         {/* Card Header */}
         <div className="pass-card-top">
           <div className="pass-brand">
-            <span className="pass-logo">🚌</span>
+            <span className="pass-logo">
+              <Bus size={20} />
+            </span>
             <div>
               <h3 className="pass-college">College of Engineering, Perumon</h3>
               <span className="pass-system">ThinkBus Transport Pass</span>
@@ -66,7 +70,7 @@ function MyBusPass() {
         <div className="pass-card-body">
           <div className="pass-photo-area">
             <div className="pass-photo">
-              <span>🎒</span>
+               <User size={32} />
             </div>
             <span className="pass-name">{passData.studentName}</span>
             <span className="pass-adm">{passData.admNumber}</span>

@@ -1,14 +1,14 @@
 // frontend/src/App.jsx
 // -----------------------------------
 // Root application component.
-// Sets up routing for auth pages, admin panel, and student panel.
-// Auth flow is preserved — DO NOT modify login/signup logic.
+// Sets up routing for auth pages, admin panel, student panel, parent, and driver.
+// Manages global theme state — default: light (Pearl Neon).
 // -----------------------------------
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
-// Auth Pages (existing — untouched)
+// Auth Pages
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import WelcomePage from "./pages/WelcomePage";
@@ -48,31 +48,20 @@ import DriverSummary from "./pages/driver/Summary";
 import DriverStatus from "./pages/driver/Status";
 import DriverProfile from "./pages/driver/Profile";
 
-function AppRoutes() {
+function AppRoutes({ theme, onToggleTheme }) {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const navigate = useNavigate();
 
-  // Called by LoginPage on successful login
   function handleLoginSuccess(username, role) {
     setLoggedInUser({ username, role });
-    // Persist to localStorage so panel pages can read the username
     localStorage.setItem("thinkbus_user", JSON.stringify({ username, role }));
-
-    // Redirect based on role
-    if (role === "Admin") {
-      navigate("/admin/dashboard");
-    } else if (role === "Student") {
-      navigate("/student/dashboard");
-    } else if (role === "Parent") {
-      navigate("/parent/dashboard");
-    } else if (role === "Driver") {
-      navigate("/driver/route");
-    } else {
-      navigate("/welcome");
-    }
+    if (role === "Admin") navigate("/admin/dashboard");
+    else if (role === "Student") navigate("/student/dashboard");
+    else if (role === "Parent") navigate("/parent/dashboard");
+    else if (role === "Driver") navigate("/driver/route");
+    else navigate("/welcome");
   }
 
-  // Called by Sidebar logout or other logout triggers
   function handleLogout() {
     setLoggedInUser(null);
     localStorage.removeItem("thinkbus_user");
@@ -82,10 +71,9 @@ function AppRoutes() {
 
   return (
     <Routes>
-      {/* Default → Login */}
       <Route path="/" element={<Navigate to="/login" replace />} />
 
-      {/* Auth Routes (existing — untouched) */}
+      {/* Auth Routes */}
       <Route
         path="/login"
         element={
@@ -97,11 +85,7 @@ function AppRoutes() {
       />
       <Route
         path="/signup"
-        element={
-          <SignupPage
-            goToLogin={() => navigate("/login")}
-          />
-        }
+        element={<SignupPage goToLogin={() => navigate("/login")} />}
       />
       <Route
         path="/welcome"
@@ -114,13 +98,15 @@ function AppRoutes() {
         }
       />
 
-      {/* ─── Admin Panel Routes ─── */}
+      {/* ─── Admin Panel ─── */}
       <Route
         path="/admin"
         element={
           <AdminLayout
             onLogout={handleLogout}
             username={loggedInUser?.username || "Admin"}
+            theme={theme}
+            onToggleTheme={onToggleTheme}
           />
         }
       >
@@ -133,13 +119,15 @@ function AppRoutes() {
         <Route path="system"         element={<SystemConfig />} />
       </Route>
 
-      {/* ─── Student Panel Routes ─── */}
+      {/* ─── Student Panel ─── */}
       <Route
         path="/student"
         element={
           <StudentLayout
             onLogout={handleLogout}
             username={loggedInUser?.username || "Student"}
+            theme={theme}
+            onToggleTheme={onToggleTheme}
           />
         }
       >
@@ -151,13 +139,15 @@ function AppRoutes() {
         <Route path="profile"       element={<Profile />} />
       </Route>
 
-      {/* ─── Parent Panel Routes ─── */}
+      {/* ─── Parent Panel ─── */}
       <Route
         path="/parent"
         element={
           <ParentLayout
             onLogout={handleLogout}
             username={loggedInUser?.username || "Parent"}
+            theme={theme}
+            onToggleTheme={onToggleTheme}
           />
         }
       >
@@ -170,13 +160,15 @@ function AppRoutes() {
         <Route path="profile"   element={<ParentProfile />} />
       </Route>
 
-      {/* ─── Driver Panel Routes ─── */}
+      {/* ─── Driver Panel ─── */}
       <Route
         path="/driver"
         element={
           <DriverLayout
             onLogout={handleLogout}
             username={loggedInUser?.username || "Driver"}
+            theme={theme}
+            onToggleTheme={onToggleTheme}
           />
         }
       >
@@ -193,9 +185,24 @@ function AppRoutes() {
 }
 
 function App() {
+  // Default theme: "light" (Pearl Neon) — persisted in localStorage
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("thinkbus_theme") || "light";
+  });
+
+  // Apply data-theme to <html> on every theme change
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("thinkbus_theme", theme);
+  }, [theme]);
+
+  function toggleTheme() {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  }
+
   return (
     <Router>
-      <AppRoutes />
+      <AppRoutes theme={theme} onToggleTheme={toggleTheme} />
     </Router>
   );
 }

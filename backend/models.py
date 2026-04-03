@@ -16,4 +16,4 @@ class SignupRequest(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
-    role: str
+    role: str = None  # Optional — determined from DB, not required from client

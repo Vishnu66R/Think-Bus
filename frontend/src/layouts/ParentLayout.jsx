@@ -1,41 +1,47 @@
 // frontend/src/layouts/ParentLayout.jsx
 // ----------------------------------------
 // Layout wrapper for the parent panel.
-// Composes the reusable Sidebar, Header, and page Outlet.
 // ----------------------------------------
 
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import "./AdminLayout.css"; // Reuse the same layout grid CSS
+import "./AdminLayout.css";
 
-// Parent-specific navigation items
+import { 
+  LayoutDashboard, 
+  Info, 
+  Bell, 
+  CreditCard, 
+  Baby, 
+  User 
+} from "lucide-react";
+
 const PARENT_NAV_ITEMS = [
-  { path: "/parent/dashboard", label: "Dashboard",  icon: "📊" },
-  { path: "/parent/bus",       label: "Bus Info",    icon: "🚌" },
-  { path: "/parent/alerts",    label: "Alerts",      icon: "🔔" },
-  { path: "/parent/fees",      label: "Fees",        icon: "💰" },
-  { path: "/parent/children",  label: "Children",    icon: "👧" },
-  { path: "/parent/profile",   label: "Profile",     icon: "👤" },
+  { path: "/parent/dashboard", label: "Dashboard",   icon: <LayoutDashboard size={20} /> },
+  { path: "/parent/bus",       label: "Bus Info",    icon: <Info size={20} /> },
+  { path: "/parent/alerts",    label: "Alerts",      icon: <Bell size={20} /> },
+  { path: "/parent/fees",      label: "Fees",        icon: <CreditCard size={20} /> },
+  { path: "/parent/children",  label: "Children",    icon: <Baby size={20} /> },
+  { path: "/parent/profile",   label: "Profile",     icon: <User size={20} /> },
 ];
 
-function ParentLayout({ onLogout, username }) {
+function ParentLayout({ onLogout, username, theme, onToggleTheme }) {
   return (
     <div className="admin-layout" id="parent-layout">
-      {/* Sidebar with parent-specific navigation */}
       <Sidebar
         onLogout={onLogout}
         navItems={PARENT_NAV_ITEMS}
         brandTitle="ThinkBus"
         brandSubtitle="Parent Panel"
       />
-
-      {/* Main Content Area */}
       <div className="admin-main">
         <Header
-          title="Think-Bus"
+          title="Parent Portal"
           username={username}
           role="Parent"
+          theme={theme}
+          onToggleTheme={onToggleTheme}
         />
         <main className="admin-content">
           <Outlet />

@@ -1,20 +1,18 @@
 /* frontend/src/pages/student/Profile.css */
-/* ---------------------------------------- */
-/* Styles for the student profile page      */
-/* ---------------------------------------- */
+/* Neon Glassmorphism — Student Profile */
 
-.profile-header {
-  margin-bottom: 24px;
-}
+.profile-header { margin-bottom: 24px; }
+
 .profile-page-title {
   font-size: 1.6rem;
-  font-weight: 700;
-  color: #0f172a;
+  font-weight: 800;
+  color: var(--text-primary);
   margin: 0 0 4px;
 }
+
 .profile-page-desc {
-  font-size: 0.9rem;
-  color: #64748b;
+  font-size: 0.875rem;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -26,18 +24,20 @@
 }
 
 @media (max-width: 800px) {
-  .profile-content {
-    grid-template-columns: 1fr;
-  }
+  .profile-content { grid-template-columns: 1fr; }
 }
 
 /* Profile Card */
 .profile-card-main {
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-glass);
   padding: 28px 20px;
+  box-shadow: var(--glass-shadow);
 }
+
 .profile-avatar-section {
   display: flex;
   flex-direction: column;
@@ -45,39 +45,49 @@
   text-align: center;
   gap: 6px;
 }
+
 .profile-avatar {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: #eff6ff;
+  background: rgba(var(--color-primary-rgb), 0.15);
+  border: 2px solid rgba(var(--color-primary-rgb), 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.2rem;
   margin-bottom: 8px;
+  box-shadow: 0 0 16px rgba(var(--color-primary-rgb), 0.25);
 }
+
 .profile-name {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-primary);
   margin: 0;
 }
+
 .profile-adm {
-  font-size: 0.8rem;
-  color: #64748b;
+  font-size: 0.78rem;
+  color: var(--text-muted);
 }
+
 .profile-status {
   margin-top: 8px;
   padding: 4px 14px;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  background: #f1f5f9;
-  color: #64748b;
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
 }
+
 .profile-status.active {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(var(--color-success-rgb), 0.15);
+  color: var(--color-success);
+  border: 1px solid rgba(var(--color-success-rgb), 0.3);
 }
 
 /* Details Column */
@@ -88,16 +98,22 @@
 }
 
 .profile-section {
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-glass);
   padding: 20px 24px;
+  box-shadow: var(--glass-shadow);
 }
+
 .profile-section-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1e293b;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
   margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .profile-grid {
@@ -105,26 +121,23 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
+
 @media (max-width: 600px) {
-  .profile-grid {
-    grid-template-columns: 1fr;
-  }
+  .profile-grid { grid-template-columns: 1fr; }
 }
 
-.profile-field {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+.profile-field { display: flex; flex-direction: column; gap: 2px; }
+
 .field-label {
-  font-size: 0.72rem;
-  color: #94a3b8;
+  font-size: 0.68rem;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 500;
+  letter-spacing: 1px;
+  font-weight: 600;
 }
+
 .field-value {
   font-size: 0.9rem;
-  color: #0f172a;
+  color: var(--text-primary);
   font-weight: 600;
 }

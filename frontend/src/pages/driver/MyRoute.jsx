@@ -5,6 +5,14 @@
 // ----------------------------------------
 
 import { useState, useEffect, useRef } from "react";
+import { 
+  Route, 
+  GraduationCap, 
+  Bus, 
+  Clock, 
+  MapPin, 
+  Flag 
+} from "lucide-react";
 import { fetchDriverRoute, fetchDriverSummary } from "../../api";
 import "./DriverPages.css";
 
@@ -73,7 +81,9 @@ function MyRoute() {
     return (
       <div className="driver-page">
         <div className="empty-state">
-          <span className="empty-icon">🛣️</span>
+          <span className="empty-icon">
+            <Route size={48} />
+          </span>
           <p>No route assigned yet. Please contact admin.</p>
         </div>
       </div>
@@ -90,7 +100,9 @@ function MyRoute() {
       {/* Primary Info Cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "15px", marginBottom: "25px" }}>
         <div style={{ background: "#ffffff", padding: "20px", borderRadius: "16px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "15px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
-          <div style={{ fontSize: "2rem", background: "#dbeafe", color: "#1d4ed8", padding: "10px", borderRadius: "12px", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center" }}>👨‍🎓</div>
+          <div style={{ fontSize: "2rem", background: "#dbeafe", color: "#1d4ed8", padding: "10px", borderRadius: "12px", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <GraduationCap size={28} />
+          </div>
           <div>
             <span style={{ display: "block", color: "#64748b", fontSize: "0.85rem", fontWeight: "600", textTransform: "uppercase" }}>Total Students</span>
             <span style={{ display: "block", color: "#0f172a", fontSize: "1.5rem", fontWeight: "700" }}>{summary?.total_students || 0}</span>
@@ -98,7 +110,9 @@ function MyRoute() {
         </div>
         
         <div style={{ background: "#ffffff", padding: "20px", borderRadius: "16px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "15px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
-          <div style={{ fontSize: "2rem", background: "#dcfce7", color: "#16a34a", padding: "10px", borderRadius: "12px", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center" }}>🚌</div>
+          <div style={{ fontSize: "2rem", background: "#dcfce7", color: "#16a34a", padding: "10px", borderRadius: "12px", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Bus size={28} />
+          </div>
           <div>
             <span style={{ display: "block", color: "#64748b", fontSize: "0.85rem", fontWeight: "600", textTransform: "uppercase" }}>Bus Capacity</span>
             <span style={{ display: "block", color: "#0f172a", fontSize: "1.5rem", fontWeight: "700" }}>{summary?.bus_capacity || 50}</span>
@@ -106,7 +120,9 @@ function MyRoute() {
         </div>
 
         <div style={{ background: "#ffffff", padding: "20px", borderRadius: "16px", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: "15px", boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}>
-          <div style={{ fontSize: "2rem", background: "#fef3c7", color: "#b45309", padding: "10px", borderRadius: "12px", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center" }}>⏱️</div>
+          <div style={{ fontSize: "2rem", background: "#fef3c7", color: "#b45309", padding: "10px", borderRadius: "12px", width: "50px", height: "50px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Clock size={28} />
+          </div>
           <div>
             <span style={{ display: "block", color: "#64748b", fontSize: "0.85rem", fontWeight: "600", textTransform: "uppercase" }}>Est. Duration</span>
             <span style={{ display: "block", color: "#0f172a", fontSize: "1.5rem", fontWeight: "700" }}>{data.route.estimated_duration}m</span>
@@ -120,7 +136,7 @@ function MyRoute() {
           <div>
             <h3 style={{ margin: 0, color: "#1e293b", fontSize: "1.2rem", fontWeight: "700" }}>Route: {data.route.name}</h3>
             <span style={{ fontSize: "0.9rem", color: "#64748b", display: "flex", gap: "8px", marginTop: "5px" }}>
-              📍 {data.route.start_point} ➔ 🏁 {data.route.end_point}
+              <MapPin size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} /> {data.route.start_point} ➔ <Flag size={14} style={{ display: 'inline', verticalAlign: 'middle', margin: '0 4px' }} /> {data.route.end_point}
             </span>
           </div>
           <span className={`route-status-badge status--${data.bus_status.toLowerCase()}`}>

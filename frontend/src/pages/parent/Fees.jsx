@@ -5,6 +5,7 @@
 // ----------------------------------------
 
 import { useState, useEffect } from "react";
+import { CreditCard, CheckCircle, Clock } from "lucide-react";
 import { fetchParentFees } from "../../api";
 import "./ParentPages.css";
 
@@ -58,21 +59,27 @@ function Fees() {
       {/* Overall summary */}
       <div className="summary-cards">
         <div className="summary-card">
-          <span className="summary-icon" style={{ background: "#dbeafe", color: "#2563eb" }}>💰</span>
+          <span className="summary-icon" style={{ background: "#dbeafe", color: "#2563eb" }}>
+            <CreditCard size={24} />
+          </span>
           <div className="summary-body">
             <span className="summary-value">₹{totalFee.toLocaleString()}</span>
             <span className="summary-label">Total Fee</span>
           </div>
         </div>
         <div className="summary-card">
-          <span className="summary-icon" style={{ background: "#dcfce7", color: "#16a34a" }}>✅</span>
+          <span className="summary-icon" style={{ background: "#dcfce7", color: "#16a34a" }}>
+            <CheckCircle size={24} />
+          </span>
           <div className="summary-body">
             <span className="summary-value">₹{totalPaid.toLocaleString()}</span>
             <span className="summary-label">Paid</span>
           </div>
         </div>
         <div className="summary-card">
-          <span className="summary-icon" style={{ background: "#fef3c7", color: "#d97706" }}>⏳</span>
+          <span className="summary-icon" style={{ background: "#fef3c7", color: "#d97706" }}>
+            <Clock size={24} />
+          </span>
           <div className="summary-body">
             <span className="summary-value">₹{totalPending.toLocaleString()}</span>
             <span className="summary-label">Pending</span>

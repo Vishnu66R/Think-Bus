@@ -4,6 +4,26 @@
 // -------------------------------------------
 
 import { useState, useEffect, useRef } from "react";
+import { 
+  Search, 
+  GraduationCap, 
+  User, 
+  Plus, 
+  Edit2, 
+  Trash2, 
+  Hash, 
+  Route, 
+  MapPin, 
+  Bus, 
+  Phone, 
+  CreditCard, 
+  Star, 
+  AlertTriangle, 
+  X,
+  CheckCircle,
+  XCircle,
+  Mail
+} from "lucide-react";
 import {
   fetchAdminStudents,
   createAdminStudent,
@@ -30,7 +50,7 @@ function Toast({ message, type, onClose }) {
   }, [onClose]);
   return (
     <div className={`fm-toast ${type}`}>
-      {type === "success" ? "✅ " : "❌ "}
+      {type === "success" ? <CheckCircle size={18} style={{ marginRight: '8px' }} /> : <XCircle size={18} style={{ marginRight: '8px' }} />}
       <span>{message}</span>
     </div>
   );
@@ -272,7 +292,9 @@ function PeopleRegistry() {
       {/* ── Search Bar ── */}
       <div className="pr-search-section">
         <div className="pr-search-input-wrapper">
-          <span className="pr-search-icon">🔍</span>
+          <span className="pr-search-icon">
+            <Search size={18} />
+          </span>
           <input 
             type="text" 
             className="pr-search-input" 
@@ -329,17 +351,19 @@ function PeopleRegistry() {
             className={`pr-tab-btn ${activeTab === 'students' ? 'active' : ''}`}
             onClick={() => setActiveTab('students')}
           >
-            👨‍🎓 Students ({students.length})
+            <GraduationCap size={18} style={{ marginRight: '8px' }} /> 
+            Students ({students.length})
           </button>
           <button 
             className={`pr-tab-btn ${activeTab === 'drivers' ? 'active' : ''}`}
             onClick={() => setActiveTab('drivers')}
           >
-            👨‍✈️ Drivers ({drivers.length})
+            <User size={18} style={{ marginRight: '8px' }} /> 
+            Drivers ({drivers.length})
           </button>
         </div>
         <button className="fm-add-btn" onClick={handleOpenAdd}>
-          <span>+</span> Add {activeTab === "students" ? "Student" : "Driver"}
+          <Plus size={18} style={{ marginRight: '8px' }} /> Add {activeTab === "students" ? "Student" : "Driver"}
         </button>
       </div>
 
@@ -360,25 +384,33 @@ function PeopleRegistry() {
               </div>
               <div className="pr-card-body">
                 <div className="pr-detail-row">
-                  <span className="pr-detail-icon">🎓</span>
+                  <span className="pr-detail-icon">
+                    <GraduationCap size={14} />
+                  </span>
                   <span>{s.semester} Sem, <span className="pr-detail-value">{s.department}</span></span>
                 </div>
                 <div className="pr-detail-row">
-                  <span className="pr-detail-icon">🛣️</span>
+                  <span className="pr-detail-icon">
+                    <Route size={14} />
+                  </span>
                   <span>Route: {s.route_name ? <span className="pr-detail-value">{s.route_name}</span> : <i>Unassigned</i>}</span>
                 </div>
                 <div className="pr-detail-row">
-                  <span className="pr-detail-icon">📍</span>
+                  <span className="pr-detail-icon">
+                    <MapPin size={14} />
+                  </span>
                   <span>Stop: {s.stop_name ? <span className="pr-detail-value">{s.stop_name}</span> : <i>Unassigned</i>}</span>
                 </div>
                 <div className="pr-detail-row">
-                  <span className="pr-detail-icon">🚌</span>
+                  <span className="pr-detail-icon">
+                    <Bus size={14} />
+                  </span>
                   <span>Bus: {s.bus_registration ? <span className="pr-detail-value">{s.bus_registration}</span> : <i>Unassigned</i>}</span>
                 </div>
               </div>
               <div className="pr-card-footer fm-card-footer">
-                <button className="fm-action-btn fm-btn-edit" onClick={() => handleOpenEdit(s)}>✏️ Edit</button>
-                <button className="fm-action-btn fm-btn-delete" onClick={() => handleRequestDelete(s)}>🗑️ Delete</button>
+                <button className="fm-action-btn fm-btn-edit" onClick={() => handleOpenEdit(s)}><Edit2 size={12} style={{marginRight:4}} /> Edit</button>
+                <button className="fm-action-btn fm-btn-delete" onClick={() => handleRequestDelete(s)}><Trash2 size={12} style={{marginRight:4}} /> Delete</button>
               </div>
             </div>
           ))}
@@ -397,25 +429,33 @@ function PeopleRegistry() {
               </div>
               <div className="pr-card-body">
                 <div className="pr-detail-row">
-                  <span className="pr-detail-icon">📞</span>
+                  <span className="pr-detail-icon">
+                    <Phone size={14} />
+                  </span>
                   <span>Phone: <span className="pr-detail-value">{d.phone_number || "N/A"}</span></span>
                 </div>
                 <div className="pr-detail-row">
-                  <span className="pr-detail-icon">🪪</span>
+                  <span className="pr-detail-icon">
+                    <CreditCard size={14} />
+                  </span>
                   <span>License: <span className="pr-detail-value">{d.license_number || "N/A"}</span></span>
                 </div>
                 <div className="pr-detail-row">
-                  <span className="pr-detail-icon">⭐</span>
+                  <span className="pr-detail-icon">
+                    <Star size={14} />
+                  </span>
                   <span>Exp: <span className="pr-detail-value">{d.experience_years ? d.experience_years + ' Yrs' : "Unknown"}</span></span>
                 </div>
                 <div className="pr-detail-row">
-                  <span className="pr-detail-icon">🚌</span>
+                  <span className="pr-detail-icon">
+                    <Bus size={14} />
+                  </span>
                   <span>Assigned: {d.bus_registration ? <span className="pr-detail-value">{d.bus_registration}</span> : <i style={{color:'#94a3b8'}}>Free Driver</i>}</span>
                 </div>
               </div>
               <div className="pr-card-footer fm-card-footer">
-                <button className="fm-action-btn fm-btn-edit" onClick={() => handleOpenEdit(d)}>✏️ Edit</button>
-                <button className="fm-action-btn fm-btn-delete" onClick={() => handleRequestDelete(d)}>🗑️ Delete</button>
+                <button className="fm-action-btn fm-btn-edit" onClick={() => handleOpenEdit(d)}><Edit2 size={12} style={{marginRight:4}} /> Edit</button>
+                <button className="fm-action-btn fm-btn-delete" onClick={() => handleRequestDelete(d)}><Trash2 size={12} style={{marginRight:4}} /> Delete</button>
               </div>
             </div>
           ))}
@@ -536,7 +576,9 @@ function PeopleRegistry() {
         <div className="fm-modal-overlay">
           <div className="fm-modal confirm">
             <div className="fm-modal-body">
-              <div className="fm-confirm-icon">⚠️</div>
+              <div className="fm-confirm-icon" style={{ color: '#ef4444' }}>
+                <AlertTriangle size={48} />
+              </div>
               <h3>Remove Profile</h3>
               <p className="fm-confirm-text">
                 Are you sure you want to delete <strong>{personToDelete.full_name}</strong> from the registry? 
