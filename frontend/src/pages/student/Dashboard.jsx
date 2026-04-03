@@ -6,6 +6,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { fetchStudentDashboard } from "../../api";
+import MapView from "../../components/MapView";
 import "./StudentDashboard.css";
 
 function Dashboard() {
@@ -179,19 +180,37 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Map Placeholder */}
+      {/* Map Section */}
       <h3 className="detail-card-title" style={{ marginTop: '30px', fontSize: '1.2rem', color: '#1e293b' }}>Live Bus Tracking</h3>
-      <div className="student-map-widget" style={{
-        background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '40px',
-        textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
-      }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'radial-gradient(#e2e8f0 2px, transparent 2px)', backgroundSize: '20px 20px', opacity: 0.5, zIndex: 1 }}></div>
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
-          <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map View Coming Soon</h3>
-          <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>Real-time GPS tracking of <strong>{busInfo.bus_number}</strong> will appear here.</p>
+      
+      {busInfo.stops && busInfo.stops.length > 0 ? (
+        <div className="student-map-container" style={{ marginTop: '16px' }}>
+          <MapView 
+            stops={busInfo.stops.filter(s => s.lat !== 0 || s.lng !== 0)} 
+            center={
+              busInfo.stops.find(s => s.isBoarding && (s.lat !== 0 || s.lng !== 0)) 
+              ? [busInfo.stops.find(s => s.isBoarding).lat, busInfo.stops.find(s => s.isBoarding).lng]
+              : (busInfo.stops.find(s => s.lat !== 0 || s.lng !== 0) 
+                 ? [busInfo.stops.find(s => s.lat !== 0 || s.lng !== 0).lat, busInfo.stops.find(s => s.lat !== 0 || s.lng !== 0).lng]
+                 : [8.8932, 76.6141])
+            }
+            zoom={parseInt(busInfo.map_config?.default_zoom || '13')}
+            tileUrl={busInfo.map_config?.osm_tile_url}
+          />
         </div>
-      </div>
+      ) : (
+        <div className="student-map-widget" style={{
+          background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '40px',
+          textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
+        }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'radial-gradient(#e2e8f0 2px, transparent 2px)', backgroundSize: '20px 20px', opacity: 0.5, zIndex: 1 }}></div>
+          <div style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
+            <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map Data Unavailable</h3>
+            <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>No stop coordinates found for route <strong>{busInfo.route_name}</strong>.</p>
+          </div>
+        </div>
+      )}
 
     </div>
   );

@@ -46,6 +46,30 @@ def get_student_dashboard(username: str):
             if driver_res.data:
                 driver_name = driver_res.data[0]["full_name"]
 
+        # 5. Fetch all stops for the student's route with coordinates
+        route_id = student.get("default_route_id")
+        stops_data = []
+        if route_id:
+            # Join route_stops with stop_locations
+            stops_res = supabase.table("route_stops").select(
+                "id, stop_name, stop_order, stop_locations(latitude, longitude)"
+            ).eq("route_id", route_id).order("stop_order").execute()
+
+            if stops_res.data:
+                for s in stops_res.data:
+                    loc = s.get("stop_locations") or {}
+                    stops_data.append({
+                        "id": s["id"],
+                        "name": s["stop_name"],
+                        "lat": float(loc.get("latitude") or 0.0),
+                        "lng": float(loc.get("longitude") or 0.0),
+                        "isBoarding": s["id"] == student.get("boarding_stop_id")
+                    })
+
+        # 6. Fetch map configuration
+        map_config_res = supabase.table("map_config").select("*").execute()
+        map_config = {item["config_key"]: item["config_value"] for item in map_config_res.data} if map_config_res.data else {}
+
         # Format Response Payload
         payload = {
             "success": True,
@@ -57,10 +81,11 @@ def get_student_dashboard(username: str):
                 "stop_name": stop_data.get("stop_name") or "Unassigned",
                 "driver_name": driver_name,
                 "status": bus_data.get("status") or "Normal",
-                # The following are mocked for now as actual GPS/ETA logic isn't built yet
                 "estimated_arrival": "8:15 AM",
                 "last_updated": "Just now",
-                "alert_message": "Bus Route has been changed due to traffic" if bus_data.get("status") == "Rerouted" else None
+                "alert_message": "Bus Route has been changed due to traffic" if bus_data.get("status") == "Rerouted" else None,
+                "stops": stops_data,
+                "map_config": map_config
             }
         }
 

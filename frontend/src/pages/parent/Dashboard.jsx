@@ -7,12 +7,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import { fetchParentDashboard } from "../../api";
+import MapView from "../../components/MapView";
 import "./ParentPages.css";
 
 function Dashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedChildId, setSelectedChildId] = useState(null);
   const retryCount = useRef(0);
 
   // Get username from localStorage (set during login)
@@ -24,6 +26,9 @@ function Dashboard() {
       const res = await fetchParentDashboard(username);
       if (res.success) {
         setData(res);
+        if (res.children && res.children.length > 0 && !selectedChildId) {
+          setSelectedChildId(res.children[0].id);
+        }
         setError("");
         retryCount.current = 0;
         setLoading(false);
@@ -147,18 +152,52 @@ function Dashboard() {
         })}
       </div>
 
-      {/* Map Placeholder */}
-      <h3 className="section-title" style={{ marginTop: '30px' }}>Live Bus Tracking</h3>
-      <div className="parent-map-widget" style={{
-        background: '#ffffff', border: '1px dashed #cbd5e1', borderRadius: '16px', padding: '40px',
-        textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
-      }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'radial-gradient(#e2e8f0 2px, transparent 2px)', backgroundSize: '20px 20px', opacity: 0.5, zIndex: 1 }}></div>
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
-          <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map View Coming Soon</h3>
-          <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>Real-time GPS tracking of your children's buses will appear here in a future update.</p>
-        </div>
+      {/* Live Bus Tracking Map */}
+      <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h3 className="section-title" style={{ margin: 0 }}>Live Bus Tracking</h3>
+        {data.children.length > 1 && (
+          <select 
+            value={selectedChildId} 
+            onChange={e => setSelectedChildId(parseInt(e.target.value))}
+            style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem', outline: 'none', cursor: 'pointer', backgroundColor: '#f8fafc' }}
+          >
+            {data.children.map(c => (
+              <option key={c.id} value={c.id}>{c.full_name}</option>
+            ))}
+          </select>
+        )}
+      </div>
+
+      <div className="admin-map-card" style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
+        {selectedChildId ? (
+          (() => {
+            const childData = data.children.find(c => c.id === selectedChildId);
+            const stops = childData?.stops || [];
+            const validStops = stops.filter(s => s.lat !== 0 || s.lng !== 0);
+            const boardingStop = validStops.find(s => s.isBoarding);
+            
+            return validStops.length > 0 ? (
+              <MapView 
+                key={selectedChildId}
+                stops={validStops} 
+                height="500px"
+                center={boardingStop ? [boardingStop.lat, boardingStop.lng] : [validStops[0].lat, validStops[0].lng]}
+                zoom={parseInt(data.map_config?.default_zoom || '13')}
+                tileUrl={data.map_config?.osm_tile_url}
+              />
+            ) : (
+              <div style={{ padding: '60px', textAlign: 'center', color: '#64748b' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
+                <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map Data Unavailable</h3>
+                <p style={{ margin: 0 }}>No GPS coordinates found for <strong>{childData?.full_name}</strong>'s route.</p>
+              </div>
+            );
+          })()
+        ) : (
+          <div style={{ padding: '60px', textAlign: 'center', color: '#64748b' }}>
+             No children linked to this account for tracking.
+          </div>
+        )}
       </div>
     </div>
   );

@@ -260,6 +260,38 @@ def delete_bus(bus_id: int):
         return JSONResponse(status_code=500, content={"success": False, "message": str(e)})
 
 
+@router.get("/buses/{bus_id}/stops")
+def get_bus_stops(bus_id: int):
+    """Get geolocated route_stops for a specific bus ID."""
+    try:
+        # Get the route assigned to this bus
+        bus_res = supabase.table("buses").select("route_id").eq("id", bus_id).execute()
+        if not bus_res.data or not bus_res.data[0].get("route_id"):
+            return {"success": True, "data": []}
+            
+        route_id = bus_res.data[0]["route_id"]
+        
+        # Fetch stops identically to the student panel
+        stops_res = supabase.table("route_stops").select(
+            "id, stop_name, stop_order, stop_locations(latitude, longitude)"
+        ).eq("route_id", route_id).order("stop_order").execute()
+
+        formatted_stops = []
+        for st in stops_res.data:
+            if st.get("stop_locations"):
+                formatted_stops.append({
+                    "name": st["stop_name"] or "Unknown",
+                    "lat": st["stop_locations"]["latitude"],
+                    "lng": st["stop_locations"]["longitude"],
+                    "isBoarding": False
+                })
+
+        return {"success": True, "data": formatted_stops}
+    except Exception as e:
+        print(f"[ADMIN GET BUS STOPS ERROR] {e}")
+        return JSONResponse(status_code=500, content={"success": False, "message": str(e)})
+
+
 # ─── Drivers CRUD ──────────────────────────────────────────────
 
 @router.get("/drivers")

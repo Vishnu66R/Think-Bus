@@ -115,7 +115,33 @@ def get_children(username: str = Query(...)):
             "is_active": s.get("is_active", True),
         })
 
-    return {"success": True, "children": children}
+    # Fetch all stops for each child's route with coordinates
+    for child in children:
+        student_rec = next((s for s in students if s["id"] == child["id"]), None)
+        route_id = student_rec.get("default_route_id") if student_rec else None
+        stops_data = []
+        if route_id:
+            stops_res = supabase.table("route_stops").select(
+                "id, stop_name, stop_order, stop_locations(latitude, longitude)"
+            ).eq("route_id", route_id).order("stop_order").execute()
+
+            if stops_res.data:
+                for s in stops_res.data:
+                    loc = s.get("stop_locations") or {}
+                    stops_data.append({
+                        "id": s["id"],
+                        "name": s["stop_name"],
+                        "lat": float(loc.get("latitude") or 0.0),
+                        "lng": float(loc.get("longitude") or 0.0),
+                        "isBoarding": s["id"] == student_rec.get("boarding_stop_id")
+                    })
+        child["stops"] = stops_data
+
+    # Fetch map configuration
+    map_config_res = supabase.table("map_config").select("*").execute()
+    map_config = {item["config_key"]: item["config_value"] for item in map_config_res.data} if map_config_res.data else {}
+
+    return {"success": True, "children": children, "map_config": map_config}
 
 
 # ─── 3. Dashboard overview ───

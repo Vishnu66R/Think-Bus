@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from "react";
 import { fetchDriverNavigation } from "../../api";
+import MapView from "../../components/MapView";
 import "./DriverPages.css";
 
 function Navigate() {
@@ -140,18 +141,24 @@ function Navigate() {
         ))}
       </div>
 
-      {/* Map Placeholder */}
+      {/* Live Navigation Map */}
       <h3 className="section-title" style={{ marginTop: '30px', fontSize: '1.2rem', color: '#1e293b' }}>Live Navigation Map</h3>
-      <div className="driver-map-widget" style={{
-        background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '16px', padding: '40px',
-        textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
-      }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'radial-gradient(#e2e8f0 2px, transparent 2px)', backgroundSize: '20px 20px', opacity: 0.5, zIndex: 1 }}></div>
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
-          <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Turn-by-Turn GPS Coming Soon</h3>
-          <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>An interactive map guiding you seamlessly to <strong>{nextStop ? nextStop.name : data.route.end_point}</strong> will appear here.</p>
-        </div>
+      <div className="admin-map-card" style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', width: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
+        {stops && stops.length > 0 ? (
+          <MapView 
+            stops={stops.filter(s => s.lat !== 0 || s.lng !== 0)} 
+            height="500px"
+            center={stops[currentStopIdx] ? [stops[currentStopIdx].lat, stops[currentStopIdx].lng] : [8.8932, 76.6141]}
+            zoom={parseInt(data.map_config?.default_zoom || '13')}
+            tileUrl={data.map_config?.osm_tile_url}
+          />
+        ) : (
+          <div style={{ padding: '60px', textAlign: 'center', color: '#64748b' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🗺️</div>
+            <h3 style={{ fontSize: '1.3rem', color: '#1e293b', margin: '0 0 8px' }}>Map Unavailable</h3>
+            <p style={{ margin: 0 }}>No GPS coordinates found for this route.</p>
+          </div>
+        )}
       </div>
     </div>
   );

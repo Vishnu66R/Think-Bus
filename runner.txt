@@ -30,17 +30,6 @@ npm run dev
 The frontend runs at: **http://localhost:5173**
 
 
-These users are already inserted by `setup.sql`:
-
-| Username       | Password    | Role    |
-|----------------|-------------|---------|
-| admin_user     | admin123    | Admin   |
-| student_alex   | student123  | Student |
-| parent_sara    | parent123   | Parent  |
-| driver_raju    | driver123   | Driver  |
-
----
-
 ## 🔌 API Reference
 
 ### POST /signup

@@ -9,8 +9,11 @@ import {
   fetchAdminRoutesDetailed,
   createAdminRoute,
   updateAdminRoute,
-  deleteAdminRoute
+  deleteAdminRoute,
+  fetchAdminBuses,
+  fetchAdminBusStops
 } from "../../api";
+import MapView from "../../components/MapView";
 import "./RouteTraffic.css";
 // We reuse some modal/toast CSS classes from FleetManager.css, so we import it strictly for those generic components if they aren't globally defined.
 // Actually, I'll just rely on FleetManager's global classes for Toast/Modal since they are simple.
@@ -54,9 +57,37 @@ function RouteTraffic() {
   const [routeToDelete, setRouteToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
+  // Map Tracking State
+  const [buses, setBuses] = useState([]);
+  const [selectedBusId, setSelectedBusId] = useState("");
+  const [mapStops, setMapStops] = useState([]);
+
   useEffect(() => {
     loadRoutes();
+    loadBuses();
   }, []);
+
+  async function loadBuses() {
+    const res = await fetchAdminBuses();
+    if (res.success && res.data) {
+      setBuses(res.data);
+      if (res.data.length > 0) {
+        const defaultBus = res.data.find(b => b.id === 1) || res.data[0];
+        setSelectedBusId(defaultBus.id);
+      }
+    }
+  }
+
+  useEffect(() => {
+    async function loadMapStops() {
+      if (!selectedBusId) return;
+      const res = await fetchAdminBusStops(selectedBusId);
+      if (res.success) {
+        setMapStops(res.data || []);
+      }
+    }
+    loadMapStops();
+  }, [selectedBusId]);
 
   async function loadRoutes() {
     setLoading(true);
@@ -211,13 +242,56 @@ function RouteTraffic() {
     <div className="route-traffic-page">
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
-      {/* Map Widget Header Placeholder */}
-      <div className="rt-map-widget">
-        <div className="rt-map-bg"></div>
-        <div className="rt-map-content">
-          <div className="rt-map-icon">🗺️</div>
-          <h3>Live Map View</h3>
-          <p>Interactive GPS route tracking and traffic simulation will be enabled here in a future update.</p>
+      {/* Live Active Map Widget */}
+      <div className="rt-map-widget" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'stretch', justifyContent: 'flex-start', width: '100%', boxSizing: 'border-box' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: 'white', zIndex: 1 }}>
+            <span>🗺️</span> Global Tracking & Traffic
+          </h3>
+          <select 
+            value={selectedBusId} 
+            onChange={e => setSelectedBusId(e.target.value)}
+            style={{
+              padding: '8px 12px',
+              borderRadius: '8px',
+              border: 'none',
+              fontSize: '0.9rem',
+              outline: 'none',
+              cursor: 'pointer',
+              backgroundColor: 'rgba(255,255,255,0.9)',
+              color: '#333',
+              zIndex: 1,
+              fontWeight: '600'
+            }}
+          >
+            {buses.map(b => (
+              <option key={b.id} value={b.id}>
+                {b.registration_number} {b.routes ? `(${b.routes.name})` : ''}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        <div style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', minHeight: '500px', zIndex: 1, width: '100%', border: '1px solid rgba(255,255,255,0.2)' }}>
+          {selectedBusId && mapStops.length > 0 ? (
+            <MapView 
+              key={selectedBusId}
+              stops={mapStops.filter(s => s.lat !== 0 && s.lng !== 0)} 
+              center={[mapStops[0].lat, mapStops[0].lng]}
+              height="500px" 
+            />
+          ) : selectedBusId ? (
+            <div style={{ display: 'flex', height: '500px', alignItems: 'center', justifyContent: 'center', color: '#fff', background: 'rgba(0,0,0,0.1)' }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '2rem', marginBottom: '10px' }}>⏳</div>
+                <p>Establishing connection to live bus GPS...</p>
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', height: '500px', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
+              No buses available for tracking
+            </div>
+          )}
         </div>
       </div>
 

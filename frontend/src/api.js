@@ -8,24 +8,48 @@ const BASE_URL = "http://localhost:8000";
 
 // POST /signup
 export async function signupUser(username, password, role) {
-  const response = await fetch(`${BASE_URL}/signup`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password, role }),
-  });
-  const data = await response.json();
-  return data; // { success, message }
+  try {
+    const response = await fetch(`${BASE_URL}/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, role }),
+    });
+    if (!response.ok) {
+      try {
+        const errorData = await response.json();
+        return { success: false, message: errorData.message || typeof errorData.detail === 'string' ? errorData.detail : "Server Error " + response.status };
+      } catch (e) {
+        return { success: false, message: "Server returned " + response.status };
+      }
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return { success: false, message: "Network error. Please check if backend is running." };
+  }
 }
 
 // POST /login
 export async function loginUser(username, password, role) {
-  const response = await fetch(`${BASE_URL}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password, role }),
-  });
-  const data = await response.json();
-  return data; // { success, message, role, username }
+  try {
+    const response = await fetch(`${BASE_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, role }),
+    });
+    if (!response.ok) {
+      try {
+        const errorData = await response.json();
+        return { success: false, message: errorData.message || (typeof errorData.detail === 'string' ? errorData.detail : "Server Error " + response.status) };
+      } catch (e) {
+        return { success: false, message: "Server returned " + response.status };
+      }
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return { success: false, message: "Network error. Please check if backend is running." };
+  }
 }
 
 // ─── Parent Panel API ───
@@ -163,6 +187,12 @@ export async function deleteAdminStudent(id) {
 // GET /admin/buses
 export async function fetchAdminBuses() {
   const response = await fetch(`${BASE_URL}/admin/buses`);
+  return response.json();
+}
+
+// GET /admin/buses/:bus_id/stops
+export async function fetchAdminBusStops(busId) {
+  const response = await fetch(`${BASE_URL}/admin/buses/${busId}/stops`);
   return response.json();
 }
 

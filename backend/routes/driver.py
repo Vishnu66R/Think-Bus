@@ -80,15 +80,19 @@ def get_my_route(username: str = Query(...)):
     route_res = supabase.table("routes").select("*").eq("id", bus["route_id"]).execute()
     route = route_res.data[0] if route_res.data else None
 
-    # Stops in order
+    # Stops in order with coordinates
     stops_res = (
         supabase.table("route_stops")
-        .select("*")
+        .select("*, stop_locations(latitude, longitude)")
         .eq("route_id", bus["route_id"])
         .order("stop_order")
         .execute()
     )
     stops = stops_res.data or []
+
+    # Fetch map configuration
+    map_config_res = supabase.table("map_config").select("*").execute()
+    map_config = {item["config_key"]: item["config_value"] for item in map_config_res.data} if map_config_res.data else {}
 
     return {
         "success": True,
@@ -107,9 +111,12 @@ def get_my_route(username: str = Query(...)):
                 "name": s["stop_name"],
                 "order": s["stop_order"],
                 "time_from_start": s.get("time_from_start_mins", 0),
+                "lat": float(s.get("stop_locations", {}).get("latitude") or 0.0) if s.get("stop_locations") else 0.0,
+                "lng": float(s.get("stop_locations", {}).get("longitude") or 0.0) if s.get("stop_locations") else 0.0,
             }
             for s in stops
         ],
+        "map_config": map_config
     }
 
 
@@ -157,6 +164,29 @@ def get_trip_summary(username: str = Query(...)):
     route_res = supabase.table("routes").select("name, estimated_duration_minutes").eq("id", bus.get("route_id", -1)).execute()
     route = route_res.data[0] if route_res.data else {}
 
+    # Fetch all stops for this specific route with coordinates
+    route_id = bus.get("route_id")
+    stops_data = []
+    if route_id:
+        stops_res = supabase.table("route_stops").select(
+            "id, stop_name, stop_order, stop_locations(latitude, longitude)"
+        ).eq("route_id", route_id).order("stop_order").execute()
+
+        if stops_res.data:
+            for s in stops_res.data:
+                loc = s.get("stop_locations") or {}
+                stops_data.append({
+                    "id": s["id"],
+                    "name": s["stop_name"],
+                    "lat": float(loc.get("latitude") or 0.0),
+                    "lng": float(loc.get("longitude") or 0.0),
+                    "isBoarding": False  # Not relevant for driver view
+                })
+
+    # Fetch map configuration
+    map_config_res = supabase.table("map_config").select("*").execute()
+    map_config = {item["config_key"]: item["config_value"] for item in map_config_res.data} if map_config_res.data else {}
+
     return {
         "success": True,
         "summary": {
@@ -167,7 +197,9 @@ def get_trip_summary(username: str = Query(...)):
             "route_duration_mins": route.get("estimated_duration_minutes", "—"),
             "bus_capacity": bus.get("capacity", 50),
             "bus_status": bus.get("status", "Active"),
+            "stops": stops_data,
         },
+        "map_config": map_config
     }
 
 

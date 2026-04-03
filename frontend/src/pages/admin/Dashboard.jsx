@@ -8,7 +8,10 @@ import { useEffect, useState, useRef } from "react";
 import {
   fetchAdminStats,
   adminSearch,
+  fetchAdminBuses,
+  fetchAdminBusStops
 } from "../../api";
+import MapView from "../../components/MapView";
 import "./Dashboard.css";
 
 // ─── Helper: format today's date ───
@@ -25,6 +28,11 @@ function Dashboard() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Map State
+  const [buses, setBuses] = useState([]);
+  const [selectedBusId, setSelectedBusId] = useState("");
+  const [mapStops, setMapStops] = useState([]);
+
   // Search
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState(null);
@@ -37,7 +45,31 @@ function Dashboard() {
   // ─── Data Fetching ───
   useEffect(() => {
     loadDashboard();
+    loadBuses();
   }, []);
+
+  async function loadBuses() {
+    const res = await fetchAdminBuses();
+    if (res.success && res.data) {
+      setBuses(res.data);
+      if (res.data.length > 0) {
+        // Try selecting Bus 1 by default, else first bus
+        const defaultBus = res.data.find(b => b.id === 1) || res.data[0];
+        setSelectedBusId(defaultBus.id);
+      }
+    }
+  }
+
+  useEffect(() => {
+    async function loadMapStops() {
+      if (!selectedBusId) return;
+      const res = await fetchAdminBusStops(selectedBusId);
+      if (res.success) {
+        setMapStops(res.data || []);
+      }
+    }
+    loadMapStops();
+  }, [selectedBusId]);
 
   async function loadDashboard() {
     setLoading(true);
@@ -245,17 +277,52 @@ function Dashboard() {
 
       {/* ── Map + ML Alerts Row ── */}
       <div className="map-alerts-row" id="map-alerts-row">
-        {/* Map Placeholder */}
-        <div className="map-placeholder" id="map-placeholder">
-          <div className="map-placeholder-inner">
-            <div className="map-icon-big">🗺️</div>
-            <h3>Live Bus Tracking</h3>
-            <p>Real-time GPS map integration coming soon</p>
-            <div className="map-dots">
-              <span className="dot dot-1"></span>
-              <span className="dot dot-2"></span>
-              <span className="dot dot-3"></span>
-            </div>
+        {/* Live Admin Map Widget */}
+        <div className="admin-map-card" id="admin-map-card" style={{ display: 'flex', flexDirection: 'column', padding: '16px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', width: '100%', boxSizing: 'border-box' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', width: '100%' }}>
+            <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>🗺️</span> Live Bus Tracking
+            </h3>
+            <select 
+              value={selectedBusId} 
+              onChange={e => setSelectedBusId(e.target.value)}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '8px',
+                border: '1px solid #cbd5e1',
+                fontSize: '0.9rem',
+                outline: 'none',
+                cursor: 'pointer',
+                backgroundColor: '#f8fafc'
+              }}
+            >
+              {buses.map(b => (
+                <option key={b.id} value={b.id}>
+                  {b.registration_number} {b.routes ? `(${b.routes.name})` : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', minHeight: '500px', width: '100%', border: '1px solid #f1f5f9' }}>
+            {selectedBusId && mapStops.length > 0 ? (
+              <MapView 
+                key={selectedBusId}
+                stops={mapStops.filter(s => s.lat !== 0 && s.lng !== 0)} 
+                center={[mapStops[0].lat, mapStops[0].lng]}
+                height="500px" 
+              />
+            ) : selectedBusId ? (
+              <div style={{ display: 'flex', height: '500px', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', background: '#f8fafc' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '2rem', marginBottom: '10px' }}>⏳</div>
+                  <p>Loading route data for this bus...</p>
+                </div>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', height: '500px', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+                No buses available for tracking
+              </div>
+            )}
           </div>
         </div>
 
