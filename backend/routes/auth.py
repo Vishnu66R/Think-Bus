@@ -2,11 +2,126 @@
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from models import SignupRequest, LoginRequest, VALID_ROLES
+from models import SignupRequest, LoginRequest, StudentSignupRequest, VALID_ROLES
 from database import supabase
 
 router = APIRouter()
 
+DEFAULT_STUDENT_PASSWORD = "student@123"
+
+
+# ─── GET /route-stops ────────────────────────────────────────────────────────
+# Returns the 9 boarding stops along Route 1 (IDs 1–9).
+# The college stop (stop_order = 10) is excluded — it is the destination, not a boarding point.
+
+@router.get("/route-stops")
+def get_route_stops():
+    try:
+        result = (
+            supabase.table("route_stops")
+            .select("id, stop_name, stop_order")
+            .eq("route_id", 1)
+            .lt("stop_order", 10)          # exclude the college stop (stop_order 10)
+            .order("stop_order")
+            .execute()
+        )
+        return {"success": True, "stops": result.data}
+    except Exception as e:
+        print(f"[ROUTE STOPS ERROR] {e}")
+        return JSONResponse(status_code=500, content={
+            "success": False,
+            "message": f"Server error: {str(e)}"
+        })
+
+
+# ─── POST /signup/student ─────────────────────────────────────────────────────
+# Full student self-registration.
+# 1. Creates a users row (username = adm_number, password = student@123, role = Student)
+# 2. Creates a students row with all profile fields + selected boarding_stop_id
+
+@router.post("/signup/student")
+def signup_student(data: StudentSignupRequest):
+    try:
+        # --- Check for duplicate admission number / username ---
+        existing_user = supabase.table("users").select("id").eq("username", data.adm_number).execute()
+        if existing_user.data:
+            return JSONResponse(status_code=409, content={
+                "success": False,
+                "message": "A student with this admission number already exists."
+            })
+
+        existing_adm = supabase.table("students").select("id").eq("adm_number", data.adm_number).execute()
+        if existing_adm.data:
+            return JSONResponse(status_code=409, content={
+                "success": False,
+                "message": "This admission number is already registered."
+            })
+
+        # --- Validate that the selected boarding stop exists ---
+        stop_check = supabase.table("route_stops").select("id, route_id").eq("id", data.boarding_stop_id).execute()
+        if not stop_check.data:
+            return JSONResponse(status_code=400, content={
+                "success": False,
+                "message": "Invalid boarding stop selected."
+            })
+
+        stop_info = stop_check.data[0]
+        route_id = stop_info["route_id"]
+
+        # --- Compute next user id (users table has INT PK, not SERIAL — must be supplied manually) ---
+        max_user = supabase.table("users").select("id").order("id", desc=True).limit(1).execute()
+        next_user_id = (max_user.data[0]["id"] + 1) if max_user.data else 1
+
+        # --- Create the users row ---
+        user_insert = supabase.table("users").insert({
+            "id": next_user_id,
+            "username": data.adm_number,          # username = admission number
+            "password": DEFAULT_STUDENT_PASSWORD,  # always student@123
+            "role": "Student"
+        }).execute()
+
+        if not user_insert.data:
+            return JSONResponse(status_code=500, content={
+                "success": False,
+                "message": "Failed to create user account."
+            })
+
+        new_user_id = user_insert.data[0]["id"]
+
+        # --- Compute next student id (same reason — INT PK, not SERIAL) ---
+        max_student = supabase.table("students").select("id").order("id", desc=True).limit(1).execute()
+        next_student_id = (max_student.data[0]["id"] + 1) if max_student.data else 1
+
+        # --- Create the students row ---
+        student_payload = {
+            "id": next_student_id,
+            "user_id": new_user_id,
+            "full_name": data.full_name,
+            "adm_number": data.adm_number,
+            "semester": data.semester or None,
+            "department": data.department or None,
+            "boarding_stop_id": data.boarding_stop_id,
+            "default_route_id": route_id,
+            "is_active": True,
+        }
+
+        supabase.table("students").insert(student_payload).execute()
+
+        return {
+            "success": True,
+            "message": f"Account created! Use your admission number '{data.adm_number}' and password 'student@123' to log in.",
+            "username": data.adm_number
+        }
+
+    except Exception as e:
+        print(f"[STUDENT SIGNUP ERROR] {e}")
+        return JSONResponse(status_code=500, content={
+            "success": False,
+            "message": f"Server error: {str(e)}"
+        })
+
+
+# ─── POST /signup (generic — kept for admin/driver creation) ─────────────────
 
 @router.post("/signup")
 def signup(data: SignupRequest):
@@ -39,6 +154,8 @@ def signup(data: SignupRequest):
             "message": f"Server error: {str(e)}"
         })
 
+
+# ─── POST /login ──────────────────────────────────────────────────────────────
 
 @router.post("/login")
 def login(data: LoginRequest):

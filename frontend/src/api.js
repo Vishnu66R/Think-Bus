@@ -6,6 +6,32 @@
 
 const BASE_URL = "http://localhost:8000";
 
+// GET /route-stops — fetch all stops for the boarding stop dropdown
+export async function fetchRouteStops() {
+  try {
+    const response = await fetch(`${BASE_URL}/route-stops`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return { success: false, stops: [], message: "Network error. Please check if backend is running." };
+  }
+}
+
+// POST /signup/student — full student self-registration
+export async function studentSignup(payload) {
+  try {
+    const response = await fetch(`${BASE_URL}/signup/student`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return { success: false, message: "Network error. Please check if backend is running." };
+  }
+}
+
 // POST /signup
 export async function signupUser(username, password, role) {
   try {
